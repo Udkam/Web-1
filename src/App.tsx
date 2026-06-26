@@ -461,6 +461,65 @@ function Waves({
   );
 }
 
+function FourCSignature() {
+  return (
+    <div className="four-c-signature" aria-label="4c writing animation">
+      <svg viewBox="0 0 370 210" role="img">
+        <title>4c</title>
+        <defs>
+          <mask id="four-hook-mask" maskUnits="userSpaceOnUse">
+            <path
+              className="four-c-reveal four-c-reveal--hook"
+              d="M 150 34 C 108 31 61 55 50 93 C 39 132 86 149 127 131 C 153 120 169 100 174 76"
+              fill="none"
+              pathLength="1"
+              stroke="#fff"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="72"
+            />
+          </mask>
+          <mask id="four-stem-mask" maskUnits="userSpaceOnUse">
+            <path
+              className="four-c-reveal four-c-reveal--stem"
+              d="M 168 62 C 170 94 170 127 162 172"
+              fill="none"
+              pathLength="1"
+              stroke="#fff"
+              strokeLinecap="round"
+              strokeWidth="52"
+            />
+          </mask>
+          <mask id="c-spiral-mask" maskUnits="userSpaceOnUse">
+            <path
+              className="four-c-reveal four-c-reveal--c"
+              d="M 269 50 C 228 45 198 71 194 106 C 189 153 238 176 282 154 C 319 135 322 92 291 80 C 265 70 239 83 236 107 C 234 124 249 134 266 126"
+              fill="none"
+              pathLength="1"
+              stroke="#fff"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="76"
+            />
+          </mask>
+        </defs>
+
+        <g className="four-c-fill">
+          <text mask="url(#four-hook-mask)" x="32" y="159">
+            4
+          </text>
+          <text mask="url(#four-stem-mask)" x="32" y="159">
+            4
+          </text>
+          <text mask="url(#c-spiral-mask)" x="180" y="159">
+            c
+          </text>
+        </g>
+      </svg>
+    </div>
+  );
+}
+
 const showcaseEffects = [
   {
     name: "GradientText",
@@ -587,6 +646,7 @@ function App() {
         />
         <div className="hero-scrim" aria-hidden="true" />
         <Waves className="hero-waves" />
+        <FourCSignature />
 
         <header className="site-header">
           <a className="brand-mark font-podium" href="#top" onClick={closeMenu}>

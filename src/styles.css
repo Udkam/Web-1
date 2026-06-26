@@ -93,6 +93,52 @@ button {
   mix-blend-mode: screen;
 }
 
+.four-c-signature {
+  position: absolute;
+  right: clamp(1rem, 5vw, 5.5rem);
+  top: clamp(6rem, 16vh, 11rem);
+  z-index: 2;
+  width: clamp(180px, 22vw, 330px);
+  max-width: calc(100vw - 2rem);
+  opacity: 0.94;
+  pointer-events: none;
+}
+
+.four-c-signature svg {
+  display: block;
+  width: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 18px 34px rgba(0, 0, 0, 0.34));
+}
+
+.four-c-fill text {
+  fill: #f8f5ed;
+  font-family: "Mr Dafoe", cursive;
+  font-size: 176px;
+  font-weight: 400;
+}
+
+.four-c-reveal {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: four-c-write 0.9s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+.four-c-reveal--hook {
+  animation-delay: 0.45s;
+  animation-duration: 1.05s;
+}
+
+.four-c-reveal--stem {
+  animation-delay: 1.46s;
+  animation-duration: 0.58s;
+}
+
+.four-c-reveal--c {
+  animation-delay: 1.98s;
+  animation-duration: 1.18s;
+}
+
 .site-header {
   position: relative;
   z-index: 30;
@@ -958,6 +1004,12 @@ button {
   }
 }
 
+@keyframes four-c-write {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
 @media (min-width: 640px) {
   .award-note {
     display: inline-flex;
@@ -1007,6 +1059,13 @@ button {
     grid-template-columns: 1fr auto;
   }
 
+  .four-c-signature {
+    right: 1rem;
+    top: 6rem;
+    width: 150px;
+    opacity: 0.76;
+  }
+
   .showcase-section {
     padding-top: 1.25rem;
   }
@@ -1049,6 +1108,11 @@ button {
 
   .hero-title {
     font-size: 2.35rem;
+  }
+
+  .four-c-signature {
+    top: 5.75rem;
+    width: 132px;
   }
 
   .hero-copy {

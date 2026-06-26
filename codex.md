@@ -157,3 +157,28 @@
   - The hero still depends on the remote CloudFront video from the prompt; if that URL changes or fails, the first viewport falls back to the dark animated wave layer.
   - ReactBits was inspected from a temporary clone rather than installed through shadcn/jsrepo, because the showcase only needed a curated dependency-light implementation of the selected effects.
   - Local Vite server was used for verification and must be closed before finishing this task.
+
+## 2026-06-26 4c writing animation
+
+### Phase 1 - Add filled Mr Dafoe signature
+
+- Actions taken:
+  - Added the Google Fonts `Mr Dafoe` stylesheet in `index.html` and registered `fontFamily.dafoe` in Tailwind config.
+  - Added a `FourCSignature` SVG component in `src/App.tsx` and placed it as a Hero overlay.
+  - Implemented the requested stroke order with invisible SVG masks: `4` curved hook/diagonal first, `4` vertical stem second, and `c` clockwise spiral sweep third.
+  - Kept the visible glyphs as fill-only text in Mr Dafoe; the animated paths are only mask reveal paths, so no visible stroke outline is rendered.
+  - Added responsive desktop/mobile positioning in `src/styles.css` so the signature does not cover the hero title or mobile controls.
+- Verification:
+  - `npm run build` passed.
+  - Playwright desktop check at `1440x1000`: Mr Dafoe font loaded, no horizontal overflow, final mask path offsets all reached `0px`, visible text fill is `rgb(248, 245, 237)`, and visible text has no stroke style.
+  - Playwright mobile check at `390x844`: Mr Dafoe font loaded, no horizontal overflow, no undersized visible interaction targets, and the signature sits above the hero title without covering the menu button.
+  - Screenshots saved under ignored `verification/`: `four-c-desktop-start.png`, `four-c-desktop-mid.png`, `four-c-desktop-final.png`, and `four-c-mobile-final.png`.
+- Changed files:
+  - `index.html`
+  - `tailwind.config.cjs`
+  - `src/App.tsx`
+  - `src/styles.css`
+  - `codex.md`
+- Risks and next steps:
+  - The signature depends on Google Fonts loading `Mr Dafoe`; if the network font fails, the mask still runs but the fallback cursive glyph shape may differ.
+  - Local Vite verification used port `5174` because `5173` was already occupied, and the local listener must be closed before finishing this task.

@@ -7,6 +7,7 @@ module.exports = {
         geist: ["Geist", "sans-serif"],
         inter: ["Inter", "sans-serif"],
         podium: ['"FSP DEMO - PODIUM Sharp 4.11"', "Inter", "sans-serif"],
+        dafoe: ['"Mr Dafoe"', "cursive"],
       },
     },
   },
