@@ -1,6 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="BLACKICE GRID">
-  <rect width="64" height="64" fill="#0a0a0f"/>
-  <path d="M10 18h16v-6h28v10h-6v6h6v24H10V18Z" fill="#12121a" stroke="#00ff88" stroke-width="3"/>
-  <path d="M18 28h28M18 38h18M42 38h4" stroke="#00d4ff" stroke-width="3" stroke-linecap="square"/>
-  <path d="M12 52 52 12M12 12l40 40" stroke="#ff00ff" stroke-opacity=".45" stroke-width="2"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="LOUDLAB">
+  <rect width="64" height="64" fill="#FFFDF5"/>
+  <rect x="9" y="13" width="39" height="38" fill="#FFD93D" stroke="#000" stroke-width="5"/>
+  <rect x="19" y="8" width="36" height="30" fill="#FF6B6B" stroke="#000" stroke-width="5"/>
+  <path d="M18 45 46 17M18 17l28 28" stroke="#000" stroke-width="5" stroke-linecap="square"/>
+  <circle cx="47" cy="48" r="9" fill="#C4B5FD" stroke="#000" stroke-width="5"/>
 </svg>

@@ -31,399 +31,343 @@ Always aim to:
 </role>
 
 <design-system>
-# Cyberpunk / Glitch Design System
+# Design Style: Neo-brutalism
 
-## 1. Design Philosophy
+## Design Philosophy
 
-**Core Principles**: "High-Tech, Low-Life." The aesthetic is a digital dystopia colliding with a high-tech noir reality. It captures the tension between advanced technology and societal decay—a world of underground hackers, neon-drenched megacities, and corrupted data streams. This isn't a clean, utopian future; it's gritty, imperfect, and palpably dangerous. Every pixel should feel like it's being rendered on a malfunctioning CRT monitor in a rain-soaked Tokyo alley or a rogue terminal in a subterranean bunker.
+**Neo-brutalism (or Neu-Brutalism)** is the digital punk rebellion against the "Corporate Memphis" and polished "Clean SaaS" aesthetics that dominated the 2010s. While traditional Brutalism (architecture/early web) was utilitarian and drab, **Neo-brutalism** is vibrant, performative, and intentionally distinct. It combines the raw, unrefined structural honesty of brutalism with the high-saturation energy of Pop Art, the "sticker" culture of the early internet, and the rebellious spirit of DIY zine design.
 
-**The Vibe**: Dangerous, electric, rebellious, and aggressively futuristic-retro. It draws heavily from the visual language of 80s sci-fi (Blade Runner, Akira) and hacker culture (The Matrix, Ghost in the Shell). The interface should feel *alive* and volatile—buzzing with digital energy, glitching with data corruption, and pulsing with raw power. It’s not just a website; it’s a hacked feed, a forbidden interface, a window into the sprawl.
+**Core DNA & Fundamental Principles:**
 
-**The Tactile Experience**:
-- **Imperfect Technology**: Embrace the artifacts of analog-to-digital conversion. Scanlines, chromatic aberration (RGB splitting), and signal noise are not bugs; they are features. The UI should feel like it's struggling to contain the data it displays.
-- **The Void vs. The Light**: The background isn't just dark; it's a void. Against this absolute blackness, neon light (cyan, magenta, acid green) doesn't just color elements—it *illuminates* them. Light sources should feel physical, casting glows and shadows that define the hierarchy.
-- **Industrial Brutalism**: Shapes are hard, angular, and utilitarian. Chamfered corners (45-degree cuts) replace friendly rounded rectangles. Borders are technical and precise, resembling blueprints or HUD (Heads-Up Display) schematics rather than decorative frames.
+1.  **Unapologetic Visibility (The Anti-Subtle)**: Modern design often tries to be invisible—borderless cards floating on gradients, soft shadows that barely exist, blur effects that obscure structure. Neo-brutalism rejects this entirely. It demands to be seen. Structure is not implied; it is **enforced with thick, hard-edged black lines** (`border-4` everywhere). Shadows are not simulated light diffusion; they are **solid blocks of ink** offset at 45-degree angles (8px, 12px, 16px offsets with zero blur). Every element has **visual weight and presence**.
 
-**Visual Signatures That Make This Unforgettable**:
-- **Chromatic Aberration**: RGB color splitting on text and elements (red/cyan offset shadows) to simulate lens distortion or signal interference.
-- **Scanlines**: Subtle horizontal line overlays mimicking the refresh rate of old CRT monitors, adding texture and unifying the composition.
-- **Glitch Effects**: Intentional "corruption" via clip-path animations, skewed transforms, and flickering text that suggests a unstable connection or a hacked system.
-- **Neon Glow**: Text and borders that literally glow with intense, multi-layered box-shadow/text-shadow stacking, creating a "light saber" or "neon sign" effect against the dark background.
-- **Corner Cuts**: Chamfered/clipped corners on cards and buttons creating a militaristic, tech-panel aesthetic.
-- **Circuit Patterns**: Decorative SVG backgrounds resembling PCB traces or data highways, suggesting the underlying hardware.
+2.  **Digital Tactility (The Sticker Effect)**: The screen is treated not as a fluid glass surface, but as a **collage board or bulletin board**. Elements feel like physical stickers, paper cutouts, or printed cards layered on top of each other. They have "physicality"—buttons **press down mechanically** (translate X and Y to cover their shadow), cards **lift up physically** (translate up while shadow grows), and text blocks are **rotated like stickers slapped on at angles** (`rotate-1`, `-rotate-2`). This creates a tangible, almost sculptural interface.
 
----
+3.  **Organized Chaos (Controlled Messiness)**: The design embraces a "planned messiness" that looks spontaneous but is carefully orchestrated. We use **slight rotations** (`-rotate-2`, `rotate-1`, `rotate-3`) on containers and text to break the monotony of the grid. Elements **overlap intentionally** (floating decorative shapes, badges positioned absolutely). **Asymmetry is encouraged**—headlines split across lines with different colors and rotations, layouts favor 60/40 splits over perfect 50/50. Yet the underlying structure remains **rigid and functional** to ensure usability. It is "ugly-cool"—ugly by traditional polished standards, cool by rebellious intention.
 
-## 2. Design Token System (The DNA)
+4.  **Default & Raw (Web 1.0 Homage)**: The aesthetic celebrates the "default" look of the web before CSS3 smoothed everything out. It uses **pure black** (`#000000`) for all borders and text—no subtle grays. It uses **high-saturation primary colors** (Hot Red `#FF6B6B`, Vivid Yellow `#FFD93D`, Soft Violet `#C4B5FD`) that feel like unmixed paint or highlighter markers. Typography is **bold and heavy** (font weights 700 and 900 only). The **cream background** (`#FFFDF5`) mimics aged paper or newsprint, rejecting stark white.
 
-### Colors (Dark Mode - Mandatory)
+5.  **Maximalism as Statement**: While modern design trends toward minimalism, neo-brutalism is **deliberately maximal**. More borders. More shadows. More uppercase text. More visual noise (halftone patterns, grid overlays, noise textures). This isn't visual clutter—it's **visual density** used to create energy and urgency.
 
-```
-background:          #0a0a0f      // Deep void black with slight blue undertone
-foreground:          #e0e0e0      // Primary text, not pure white (less harsh)
-card:                #12121a      // Card background, deep purple-black
-muted:               #1c1c2e      // UI chrome/elevated backgrounds
-mutedForeground:     #6b7280      // Secondary text, reduced contrast
-accent:              #00ff88      // PRIMARY NEON - Electric green (Matrix-inspired)
-accentSecondary:     #ff00ff      // SECONDARY NEON - Hot magenta/pink
-accentTertiary:      #00d4ff      // TERTIARY NEON - Cyan/electric blue
-border:              #2a2a3a      // Subtle borders
-input:               #12121a      // Deep input background
-ring:                #00ff88      // Focus ring matches accent
-destructive:         #ff3366      // Error/danger red-pink
-```
+6.  **Irony & Confidence**: The style exudes a sense of irony and self-awareness. It says, "I know this looks unpolished, and that's exactly why it's good." It requires **confidence** to pull off; there is no room for timidity in Neo-brutalism. It's anti-corporate, anti-smooth, anti-boring.
+
+7.  **Mechanical Interactivity**: Interactions feel **mechanical and satisfying**, not smooth and ethereal. Buttons don't fade or glow—they **click down** like physical switches. Hovers don't soften—they **snap** into place. Transitions are **fast** (`duration-100`, `duration-200`) and **direct**, creating a snappy, arcade-game-like responsiveness.
+
+**The Vibe & Emotional Tone**:
+*   **Nostalgic & Retro-Modern**: Channelling Y2K energy, 90s punk zines, DIY flyers, rave posters, and early web forums.
+*   **Energetic & Loud**: It **screams** rather than whispers. It grabs attention aggressively.
+*   **Playful yet Functional**: It uses **gamified interactions** (bouncy hovers, hard clicks, rotating badges) to make utilitarian software feel like a toy or game.
+*   **Anti-Corporate Authenticity**: It rejects the polished veneer of corporate design systems, embracing rawness and imperfection as honesty.
+*   **Confident & Bold**: Every design choice is **deliberate and exaggerated**. Nothing is subtle.
+
+**Visual Signatures (What Makes It Instantly Recognizable)**:
+*   **Hard Black Strokes**: The unifying visual element. **If it doesn't have a border, it doesn't exist.** `border-4` is the default. All borders are solid black.
+*   **Offset Hard Shadows**: Shadows are **solid rectangles** with zero blur, offset at 45-degree angles (bottom-right). Small: `4px 4px 0px 0px #000`. Medium: `8px 8px 0px 0px #000`. Large: `12px 12px 0px 0px #000`. Massive: `16px 16px 0px 0px #000`.
+*   **The "Pop" Palette**: Cream background (`#FFFDF5`) serves as a neutral canvas for **intense bursts of highlighter colors** (Red, Yellow, Violet). Black is the structural color. White is used for contrast panels.
+*   **Typography as Texture**: Massive, heavy fonts (**Space Grotesk at 900 weight**) often treated with text outlines (`-webkit-text-stroke: 2px black` with transparent fill) or highlighted by placing text inside bordered, colored boxes. **All caps** for emphasis. Extreme tracking (`tracking-tighter` for headlines, `tracking-widest` for labels).
+*   **Sticker Layering**: Text blocks, badges, and containers are **rotated and layered** like stickers on a laptop. Elements cast hard shadows onto elements "below" them.
+*   **Texture & Patterns**: Backgrounds aren't flat. Use **halftone dots** (radial gradients), **grid patterns** (linear gradient lines), **noise textures** (SVG filters), and **geometric overlays** to add visual richness without traditional depth.
+*   **Asymmetric Composition**: Deliberately **break the grid**. Headlines split unevenly. Sections use 60/40 or 70/30 splits. Elements float off-axis.
+
+**What Neo-Brutalism Is NOT**:
+*   **Not Minimal**: It's maximal and dense.
+*   **Not Smooth**: It's jagged, sharp, and angular.
+*   **Not Subtle**: It's loud, high-contrast, and in-your-face.
+*   **Not Polished**: It celebrates roughness and rawness.
+*   **Not Corporate**: It's rebellious and anti-establishment in its aesthetic DNA.
+
+## Design Token System (The DNA)
+
+### Colors (High Saturation Light Mode Palette)
+Neo-brutalism uses a **single, definitive light mode palette**. All colors are high-saturation and unapologetic.
+
+*   **Background (Canvas)**: `#FFFDF5` (Cream/Off-White)
+    *   A warm, paper-like background that mimics aged newsprint or recycled paper. Softer than stark white, more authentic.
+    *   Use: Main page background, card interiors, contrast panels.
+
+*   **Foreground (Ink)**: `#000000` (Pure Black)
+    *   The structural color. Used for ALL text, ALL borders, ALL shadows. No grays, no variations.
+    *   Use: Text, borders (`border-black`), shadows, icons.
+
+*   **Accent (Hot Red)**: `#FF6B6B`
+    *   Primary action color. Vibrant, energetic, attention-grabbing.
+    *   Use: Primary buttons (`bg-neo-accent`), hover states, important badges, call-to-action backgrounds.
+
+*   **Secondary (Vivid Yellow)**: `#FFD93D`
+    *   Secondary highlight color. Bright, cheerful, high-energy.
+    *   Use: Secondary buttons, badges, logo backgrounds, footer background, alternate section backgrounds.
+
+*   **Muted (Soft Violet)**: `#C4B5FD`
+    *   Tertiary color for depth and variation without clashing.
+    *   Use: Subtle backgrounds (`bg-neo-muted`), card headers, FAQ answer backgrounds, decorative elements.
+
+*   **White**: `#FFFFFF`
+    *   Used for high-contrast text on dark backgrounds (e.g., black sections, accent buttons).
+    *   Use: Text on black backgrounds, inverted buttons, contrast panels.
+
+**Color Usage Rules:**
+- **Never use subtle grays.** It's black or a color, never #333 or #666.
+- **High contrast is mandatory.** All text must pass WCAG AA on its background.
+- **Color blocking:** Sections alternate between cream, secondary, muted, and black to create visual rhythm.
 
 ### Typography
+*   **Family**: `Space Grotesk` (Google Font: `font-family: 'Space Grotesk', sans-serif`)
+    *   A geometric sans-serif with quirky personality. Modern but not clinical. Bold enough to carry heavy weights.
+    *   Load via Google Fonts: `https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700;900&display=block`
 
-**Font Stack**:
-- **Headings**: `"Orbitron", "Share Tech Mono", monospace` — Geometric, futuristic, robotic
-- **Body**: `"JetBrains Mono", "Fira Code", "Consolas", monospace` — Clean monospace for that terminal feel
-- **Accent/Labels**: `"Share Tech Mono", monospace` — For UI labels, timestamps, badges
+*   **Weights**: **Only heavy weights allowed.**
+    *   **Black (900)**: For all headings (h1, h2, h3). `font-black`
+    *   **Bold (700)**: For all body text, labels, buttons. `font-bold`
+    *   **Medium (500)**: Sparingly, only for subtle emphasis. `font-medium`
+    *   **Regular (400)**: Generally avoided. Lightness is forbidden in neo-brutalism.
 
-**Scale & Styling**:
-- H1: `text-6xl` to `text-8xl`, `font-black`, `uppercase`, `tracking-widest`
-- H2: `text-4xl` to `text-5xl`, `font-bold`, `uppercase`, `tracking-wide`
-- H3: `text-xl` to `text-2xl`, `font-semibold`, `uppercase`
-- Body: `text-base`, `font-normal`, `tracking-wide`, `leading-relaxed`
-- Code/Labels: `text-sm`, `font-mono`, `uppercase`, `tracking-[0.2em]`
+*   **Scale**:
+    *   Display: `text-8xl` to `text-9xl` (96px to 128px) for hero headlines.
+    *   Heading 2: `text-6xl` to `text-8xl` (60px to 96px) for section titles.
+    *   Heading 3: `text-4xl` to `text-5xl` (36px to 48px) for subsections.
+    *   Body Large: `text-2xl` to `text-3xl` (24px to 30px) for emphasis.
+    *   Body: `text-lg` to `text-xl` (18px to 20px) for readable text.
+    *   Small: `text-sm` to `text-base` (14px to 16px) for labels and metadata.
 
-### Radius & Border
+*   **Styling Techniques**:
+    *   **Text Stroke (Display)**: Use `-webkit-text-stroke: 2px black` with `color: transparent` for massive hollow outlined text.
+    *   **Case**: Heavy use of **UPPERCASE** (`uppercase`) for headings, labels, buttons, and emphasis. Lowercase is acceptable for body text.
+    *   **Tracking**:
+        *   Headlines: `tracking-tighter` or `tracking-tight` for density.
+        *   Labels: `tracking-widest` or `tracking-[0.2em]` for emphasis.
+    *   **Line Height**: Tight leading. `leading-none` or `leading-[0.85]` for display. `leading-snug` or `leading-relaxed` for body.
 
-```
-radius.none:     0px        // Sharp cuts are the default
-radius.sm:       2px        // Minimal softening
-radius.base:     4px        // Rare, only for inputs
-radius.chamfer:  Use clip-path for corner cuts instead of border-radius
-```
+### Radius & Borders
+*   **Radius**: **Default is `0px` (sharp, angular corners).**
+    *   Exception: `rounded-full` ONLY for pill badges, circular stickers, or decorative shape elements.
+    *   Never use `rounded-md` or `rounded-lg`. It's either sharp or fully round.
 
-**Border Width**: `1px` default, `2px` for emphasis, borders often use gradient or glow effects
-
-**Chamfered Corner Pattern** (apply via clip-path):
-```css
-clip-path: polygon(
-  0 10px, 10px 0,           /* top-left cut */
-  calc(100% - 10px) 0, 100% 10px,  /* top-right cut */
-  100% calc(100% - 10px), calc(100% - 10px) 100%,  /* bottom-right cut */
-  10px 100%, 0 calc(100% - 10px)   /* bottom-left cut */
-);
-```
+*   **Borders**: **Mandatory on every visual element.**
+    *   Default: `border-4` (4px solid black). This is the signature thickness.
+    *   Thin: `border-2` (2px) only for subtle separators or ghost buttons.
+    *   Thick: `border-8` (8px) for major section dividers or hero elements.
+    *   All borders: `border-black` (solid black, no transparency).
 
 ### Shadows & Effects
+*   **Hard Shadows (The Signature)**: Offset, solid black shadows with **zero blur** and **zero spread**. Always bottom-right direction.
+    *   **Small**: `shadow-[4px_4px_0px_0px_#000]` or `box-shadow: 4px 4px 0px 0px #000`
+    *   **Medium**: `shadow-[8px_8px_0px_0px_#000]` or `box-shadow: 8px 8px 0px 0px #000`
+    *   **Large**: `shadow-[12px_12px_0px_0px_#000]` or `box-shadow: 12px 12px 0px 0px #000`
+    *   **Massive**: `shadow-[16px_16px_0px_0px_#000]` or `shadow-[20px_20px_0px_0px_#fff]` (for elements on black backgrounds)
 
-**Neon Glow (CSS Variable Tokens)**:
-```css
-/* Main neon glow - used on hover states, focus rings, highlighted elements */
---box-shadow-neon: 0 0 5px #00ff88, 0 0 10px #00ff8840;
+*   **Text Shadows**: Use for text on colored backgrounds.
+    *   `text-shadow: 4px 4px 0px #000` or `text-shadow: 6px 6px 0px #000`
 
-/* Small neon glow - subtle accents */
---box-shadow-neon-sm: 0 0 3px #00ff88, 0 0 6px #00ff8830;
+*   **Background Patterns & Textures** (Critical for depth):
+    *   **Halftone Dots**:
+        ```css
+        background-image: radial-gradient(#000 1.5px, transparent 1.5px);
+        background-size: 20px 20px;
+        ```
+    *   **Grid Pattern** (graph paper):
+        ```css
+        background-size: 40px 40px;
+        background-image: linear-gradient(to right, rgba(0, 0, 0, 0.1) 1px, transparent 1px),
+                          linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
+        ```
+    *   **Noise Texture** (SVG filter):
+        ```css
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'%2F%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        ```
+    *   **Radial Dots** (for backgrounds):
+        ```css
+        background-image: radial-gradient(circle, #000 2px, transparent 2.5px);
+        background-size: 30px 30px;
+        ```
 
-/* Large neon glow - emphasized states, hero elements */
---box-shadow-neon-lg: 0 0 10px #00ff88, 0 0 20px #00ff8860, 0 0 40px #00ff8830;
-
-/* Secondary neon (magenta) */
---box-shadow-neon-secondary: 0 0 5px #ff00ff, 0 0 20px #ff00ff60;
-
-/* Tertiary neon (cyan) */
---box-shadow-neon-tertiary: 0 0 5px #00d4ff, 0 0 20px #00d4ff60;
-```
-
-**Text Shadows for Depth**:
-```css
-/* Glitch effect text shadow (used on hero headline) */
-drop-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
-
-/* Gradient text glow */
-drop-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
-```
-
-**Chromatic Aberration (via CSS animation on .cyber-glitch)**:
-Implemented via ::before and ::after pseudo-elements with:
-- text-shadow: -1px 0 #ff00ff (magenta left)
-- text-shadow: -1px 0 #00d4ff (cyan right)
-- clip-path animations for glitch effect
-
-### Textures & Patterns (CRITICAL FOR DEPTH)
-
-1. **Scanlines Overlay** (CSS pseudo-element):
-```css
-background: repeating-linear-gradient(
-  0deg,
-  transparent,
-  transparent 2px,
-  rgba(0, 0, 0, 0.3) 2px,
-  rgba(0, 0, 0, 0.3) 4px
-);
-pointer-events: none;
-```
-
-2. **Grid/Circuit Pattern** (subtle background):
-```css
-background-image:
-  linear-gradient(rgba(0, 255, 136, 0.03) 1px, transparent 1px),
-  linear-gradient(90deg, rgba(0, 255, 136, 0.03) 1px, transparent 1px);
-background-size: 50px 50px;
-```
-
-3. **Noise Texture**: Apply subtle CSS noise filter or SVG noise overlay at 5-10% opacity
-
-4. **Gradient Mesh**: Radial gradients of accent colors at very low opacity in corners
-
----
-
-## 3. Component Stylings
+## Component Styling Principles
 
 ### Buttons
+*   **Shape**: Rectangular with sharp corners. Default height: `h-12` to `h-14`. No rounding.
+*   **Style**:
+    *   Primary: `bg-neo-accent` (red) with `border-4 border-black`.
+    *   Secondary: `bg-neo-secondary` (yellow) with `border-4 border-black`.
+    *   Outline: `bg-white` with `border-4 border-black`.
+    *   Ghost: `border-2 border-transparent` that becomes `border-black` on hover.
+*   **Typography**: `font-bold text-sm uppercase tracking-wide` (all caps, bold, spaced).
+*   **Shadow**: Hard shadow `shadow-[4px_4px_0px_0px_#000]` or `shadow-[6px_6px_0px_0px_#000]`.
+*   **Interaction (Critical)**: **"Push" effect.** On `:active`, translate the button to cover its shadow:
+    ```css
+    active:translate-x-[2px] active:translate-y-[2px] active:shadow-none
+    ```
+    This creates a mechanical "click down" feel, like a physical button.
+*   **Hover**: Slight background darkening or shadow intensification. Fast transition (`duration-100`).
 
-All buttons use:
-- Font: monospace
-- Text transform: uppercase
-- Letter spacing: wider
-- Transition: all for smooth effects
-- Focus ring: 2px accent color
-
-**Default Variant**:
-```
-- Background: transparent
-- Border: 2px solid accent (#00ff88)
-- Text: accent color
-- Clip-path: .cyber-chamfer-sm (smaller chamfer)
-- Hover: background fills with accent, text becomes background color, neon glow shadow
-```
-
-**Secondary Variant**:
-```
-- Border: 2px solid accentSecondary (#ff00ff)
-- Text: accentSecondary
-- Hover: fills with magenta, neon-secondary glow
-```
-
-**Outline Variant**:
-```
-- Border: 1px solid border (#2a2a3a)
-- Background: transparent
-- Hover: border becomes accent, text becomes accent, neon glow appears
-```
-
-**Ghost Variant**:
-```
-- No border
-- Hover: background accent/10 opacity, text becomes accent
-```
-
-**Glitch Variant** (CTAs):
-```
-- Background: solid accent (#00ff88)
-- Text: background color (high contrast)
-- Uses .cyber-glitch class for chromatic aberration effect
-- Hover: brightness increases (filter: brightness(1.1))
-```
-
-### Cards/Containers
-
-**Default Card Variant**:
-```
-- Background: card (#12121a)
-- Border: 1px solid border (#2a2a3a)
-- Clip-path: chamfered corners via .cyber-chamfer class
-- Transition: all 300ms for smooth interactions
-- Hover: translateY(-1px), border becomes accent, neon glow appears (if hoverEffect prop)
-```
-
-**Terminal Variant** (variant="terminal"):
-```
-- Background: background (#0a0a0f) instead of card
-- Border: 1px solid border
-- Automatic decorative header bar with traffic light dots (red/yellow/green)
-- Content padding-top to accommodate header
-- Clip-path: chamfered corners
-- Used for: Blog cards, FAQ items, some pricing tiers
-```
-
-**Holographic Variant** (variant="holographic"):
-```
-- Background: muted (#1c1c2e) at 30% opacity
-- Border: 1px solid accent at 30% opacity
-- Box-shadow: neon glow
-- Backdrop-filter: blur for glassmorphic effect
-- Corner accents: 4 small border corners at card edges using absolute positioning
-- Used for: Product details card, hero HUD panels
-```
+### Cards / Containers
+*   **Structure**: `bg-white` with `border-4 border-black` and sharp corners (`rounded-none`).
+*   **Shadow**: Deep hard shadows (`shadow-[8px_8px_0px_0px_#000]` to `shadow-[12px_12px_0px_0px_#000]`).
+*   **Hover (Lift Effect)**: Translate card **upward** and **increase shadow size**:
+    ```css
+    hover:-translate-y-1 hover:shadow-[10px_10px_0px_0px_#000]
+    ```
+    or
+    ```css
+    hover:-translate-y-2 hover:shadow-[16px_16px_0px_0px_#000]
+    ```
+    This makes the card feel like it's physically lifting off the page.
+*   **Headers**: Often have colored backgrounds (`bg-neo-muted/20` or `bg-neo-secondary`) with `border-b-4 border-black` separator.
 
 ### Inputs
+*   **Style**: Thick black borders (`border-4 border-black`). Sharp corners. `bg-white` default.
+*   **Typography**: Large, bold text (`font-bold text-lg` or `text-xl`). Placeholder is `placeholder:text-black/40`.
+*   **Focus**: **Background color change** instead of ring:
+    ```css
+    focus-visible:bg-neo-secondary focus-visible:shadow-[4px_4px_0px_0px_#000] focus-visible:outline-none focus-visible:ring-0
+    ```
+    Input becomes yellow and gains a shadow when focused. No soft glow.
+*   **Height**: `h-14` to `h-20` for touch-friendly sizing.
 
-```
-- Wrapper: relative positioning for prefix icon
-- Prefix: ">" symbol in accent color, absolute positioned left
-- Background: input (#12121a)
-- Border: 1px solid border (#2a2a3a)
-- Clip-path: .cyber-chamfer-sm
-- Text: monospace, accent color
-- Padding-left: 8 (to accommodate prefix)
-- Placeholder: mutedForeground, styled as terminal prompt
-- Focus: border becomes accent, neon glow shadow, outline removed
-- Transition: all 200ms
-```
+### Navigation
+*   **Logo**: Bordered box (`border-4 border-black`) with accent background. Uppercase, black font.
+*   **Links**: Bold, uppercase text. Hover state adds border and background:
+    ```css
+    hover:border-black hover:bg-neo-accent hover:px-2 hover:shadow-[4px_4px_0px_0px_#000]
+    ```
+*   **Mobile Menu**: Hamburger button as bordered square with shadow. Menu slides in with stacked bordered buttons.
 
----
+### Badges
+*   **Shape**: Pill (`rounded-full`) or square (`border-4`).
+*   **Style**: Colored background (`bg-neo-accent` or `bg-neo-secondary`) with thick border and shadow.
+*   **Typography**: `font-black text-sm uppercase tracking-widest`.
+*   **Usage**: Positioned absolutely over elements (`:absolute top-4 left-4`), rotated (`rotate-3`), or inline.
 
-## 4. Layout Strategy
+## Layout Principles
 
-**Max-Width**: `max-w-7xl` for main content, full-bleed sections with contained inner content
+*   **Container Width**: Use `container mx-auto` with `max-w-7xl` or `max-w-6xl` for focused content width.
+*   **Spacing**: Dense 8px base grid. Sections have `py-16` to `py-32` vertical padding. Content spacing: `gap-8` to `gap-12`.
+*   **Rotation (Sticker Effect)**: Use slight rotations on containers and text blocks to break grid monotony:
+    *   `rotate-1` (1 degree), `-rotate-2` (-2 degrees), `rotate-3` (3 degrees).
+    *   Apply to headline spans, cards, badges, and CTAs.
+*   **Marquee**: Use horizontal scrolling marquees (e.g., `react-fast-marquee`) as:
+    *   Trust indicators at page top.
+    *   Testimonial carousels.
+    *   Section dividers with repeated text.
+*   **Overlapping**: Allow elements to overlap using absolute positioning:
+    *   Floating decorative shapes (`absolute top-20 left-0`).
+    *   Badges positioned on corners of cards (`-top-6 -right-6`).
+    *   Background text as texture (`absolute opacity-10 text-9xl`).
+*   **Visual Chaos Zones**: Intentionally create "busy" areas (like Hero right side) with:
+    *   Stacked geometric shapes.
+    *   Multiple rotated badges.
+    *   Large background numbers or text.
+*   **Asymmetry**: Avoid perfect symmetry. Use 60/40 splits, offset columns, and staggered grids.
 
-**Grid Patterns**:
-- Features: `grid-cols-1 md:grid-cols-2 lg:grid-cols-3` with `-skew-y-1` on container
-- Pricing: `grid-cols-1 md:grid-cols-3` with middle card scaled up
-- Stats: Horizontal flex with `divide-x divide-border`
+## The "Bold Factor" (Non-Genericness)
 
-**Spacing**: 8px base grid. Generous padding (`py-24` to `py-32` for sections). Dense internal component spacing.
+These techniques ensure the design is unmistakably neo-brutalist and never generic:
 
-**Asymmetry Requirements**:
-- Hero: 60/40 split minimum
-- At least one section with overlapping elements (negative margins)
-- Use `rotate-1` or `skew-y-1` transforms on section containers
-- Stagger card heights in grid where content allows
+1.  **Text Stroke for Display Typography**: Use `-webkit-text-stroke: 2px black` with `color: transparent` for massive hollow outlined headings. Overlay with solid version for depth effect.
 
----
+2.  **Sticker Layering**: Elements feel like physical stickers:
+    *   Rotated text blocks with borders and shadows.
+    *   Absolutely positioned badges that overlap content.
+    *   Multiple "layers" created with shadows.
 
-## 5. Non-Genericness (THE BOLD FACTOR)
+3.  **Interactive Physics**: Elements must physically move:
+    *   Buttons: **Push down** on click (`active:translate-x-[2px] active:translate-y-[2px]`).
+    *   Cards: **Lift up** on hover (`hover:-translate-y-2`).
+    *   Badges: **Rotate further** on hover (`hover:rotate-12`).
 
-**MANDATORY BOLD CHOICES**:
+4.  **Primitive Shape Motifs**: Heavy use of:
+    *   **Stars** (5-point, `<Star />` from lucide-react). Use as decorative elements, ratings, and dividers.
+    *   **Arrows** (`<ArrowRight />`) for directional cues.
+    *   **Basic Shapes**: Squares, circles, rectangles as decorative floaters.
 
-1. **Glitched Headlines**: Hero h1 MUST have chromatic aberration text-shadow AND a CSS animation that occasionally "glitches" (random skew/translate flicker)
+5.  **Thick Border Everywhere**: If an element doesn't have a visible border, it feels wrong. Even whitespace is bordered.
 
-2. **Scanline Overlay**: The entire page has a subtle scanline overlay (via ::after on body or main)
+6.  **Color Blocking**: Large sections with solid color backgrounds (red, yellow, violet, black) to create high-contrast rhythm.
 
-3. **Terminal Aesthetic**: At least one section must feel like a terminal (monospace, > prefixes, blinking cursor animations)
+7.  **Texture Overlays**: Never leave backgrounds flat. Always add halftone, grid, or noise.
 
-4. **Neon Borders That Actually Glow**: Not just colored borders - stacked box-shadows creating real glow effect
+## Anti-Patterns (What to Avoid)
 
-5. **Corner Cuts**: Cards use clip-path for chamfered/cut corners, not rounded corners
+These techniques would break the neo-brutalist aesthetic:
 
-6. **Animated Elements**:
-   - Blinking cursors (animation: blink 1s step-end infinite)
-   - Subtle hover glitch effects
-   - Gradient border animations (hue rotation)
+*   **Blur Effects**: No `blur()`, no `backdrop-blur`, no soft `box-shadow` with blur radius. All shadows must be hard.
+*   **Opacity/Transparency**: Avoid alpha transparency on backgrounds (except for texture overlays at low opacity).
+*   **Smooth Gradients**: No `bg-gradient-to-r` fades. Use hard color stops or patterns instead.
+*   **Rounded Corners (Mid-Range)**: Avoid `rounded-md`, `rounded-lg`, `rounded-xl`. It's either `rounded-none` (sharp) or `rounded-full` (pill/circle).
+*   **Subtle Grays**: No `#333`, `#666`, `#999`. Use pure black or a color.
+*   **Soft Animations**: No `ease-in-out` or slow durations. Use `ease-linear` or `ease-out` with fast durations.
+*   **Minimalist Whitespace**: Don't leave large empty areas. Fill with texture, patterns, or decorative elements.
 
-7. **Circuit/Grid Background**: Visible tech-pattern in at least one section background
+## Animation & Motion
 
-8. **Typing/Typewriter Effect**: Consider on subtitle or at least style as if mid-type (trailing cursor)
+*   **Feel**: Bouncy, playful, mechanical, arcade-like.
+*   **Transition Speed**: Fast and snappy.
+    *   Buttons: `duration-100` (100ms).
+    *   Cards/Hovers: `duration-200` or `duration-300` (200-300ms).
+*   **Easing**: `ease-linear` for mechanical feel, `ease-out` for natural deceleration. Avoid `ease-in-out`.
+*   **Hover Interactions**:
+    *   Buttons: Background darken, then press on click.
+    *   Cards: Translate upward (`-translate-y-2`) and shadow deepens.
+    *   Links: Add border and background, snap into place.
+*   **Looping Animations**:
+    *   Slow spins on decorative stars (`animate-spin-slow`, custom duration 10s).
+    *   Pulsing on call-to-action elements (`animate-pulse`).
+    *   Bouncing on attention-grabbing badges (`animate-bounce`).
+*   **Custom Animations** (via CSS):
+    ```css
+    @keyframes spin-slow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .animate-spin-slow {
+      animation: spin-slow 10s linear infinite;
+    }
+    ```
 
----
+## Spacing, Layout & Iconography
 
-## 6. Effects & Animation
+*   **Max-Width**: `max-w-7xl` or `max-w-6xl` for main content. Sections can be full-width with contained inner content.
+*   **Grid System**: Use Tailwind's grid (`grid-cols-1 md:grid-cols-2 lg:grid-cols-3`) with responsive breakpoints.
+*   **Spacing Scale**: Dense. `gap-6` to `gap-12` between elements. `py-16` to `py-32` for section padding.
+*   **Iconography**: Import from `lucide-react`.
+    *   Style: `stroke-[3px]` or `stroke-[4px]` for thick, bold strokes.
+    *   Size: `h-8 w-8` or larger (`h-12 w-12`) for emphasis.
+    *   Placement: Inside bordered boxes (`border-4 border-black bg-neo-accent p-4`).
+    *   Fill: Use `fill-black` or `fill-white` for solid icons.
 
-**Motion Feel**: Sharp, digital, slightly mechanical. Quick snaps rather than smooth eases.
+## Responsive Strategy
 
-**Transitions**:
-```css
-transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
-/* Or for more digital feel: */
-transition: all 100ms steps(4);
-```
+*   **Mobile First**: Design starts with mobile (`base`) and scales up.
+*   **Breakpoints**:
+    *   `sm:` (640px) - Small tablets
+    *   `md:` (768px) - Tablets
+    *   `lg:` (1024px) - Desktops
+    *   `xl:` (1280px) - Large desktops
+*   **Mobile Adaptations**:
+    *   **Typography**: Scale down (e.g., `text-4xl sm:text-6xl md:text-8xl`).
+    *   **Spacing**: Reduce padding (e.g., `p-8 sm:p-12 md:p-16`).
+    *   **Grids**: Stack to single column (`grid-cols-1 md:grid-cols-2 lg:grid-cols-3`).
+    *   **Shadows**: Reduce size on mobile (e.g., `shadow-[6px_6px_0px_0px_#000] sm:shadow-[8px_8px_0px_0px_#000]`).
+    *   **Navigation**: Hamburger menu with bordered button. Full-screen or slide-in drawer.
+    *   **Buttons**: Full width on mobile (`w-full sm:w-auto`).
+    *   **Touch Targets**: Minimum `h-14` for tappable elements.
+*   **Core Aesthetic Maintained**: Even on mobile, keep thick borders, hard shadows, and bold typography. Don't default to "generic mobile" design.
 
-**Keyframe Animations**:
+## Accessibility & Best Practices
 
-```css
-/* Blink cursor */
-@keyframes blink {
-  50% { opacity: 0; }
-}
-
-/* Glitch effect */
-@keyframes glitch {
-  0%, 100% { transform: translate(0); }
-  20% { transform: translate(-2px, 2px); }
-  40% { transform: translate(2px, -2px); }
-  60% { transform: translate(-1px, -1px); }
-  80% { transform: translate(1px, 1px); }
-}
-
-/* Scanline scroll */
-@keyframes scanline {
-  0% { transform: translateY(-100%); }
-  100% { transform: translateY(100vh); }
-}
-
-/* RGB shift/chromatic pulse */
-@keyframes rgbShift {
-  0%, 100% { text-shadow: -2px 0 #ff00ff, 2px 0 #00d4ff; }
-  50% { text-shadow: 2px 0 #ff00ff, -2px 0 #00d4ff; }
-}
-```
-
----
-
-## 7. Iconography
-
-**Lucide Icons Configuration**:
-- Stroke width: `1.5px` (thin, technical feel)
-- Size: Generally `h-5 w-5` or `h-6 w-6`
-- Color: Inherit from text (usually accent or foreground)
-- Style: Add subtle glow on hover via filter: `drop-shadow(0 0 4px currentColor)`
-
-**Icon Containers**: Place icons inside bordered squares/hexagons with glow effect
-
----
-
-## 8. Responsive Strategy
-
-**Mobile Adaptations** (Mobile-first approach):
-
-**Typography Scaling**:
-- Hero h1: text-5xl (mobile) → text-7xl (md) → text-8xl (lg)
-- Subheadline: text-base → text-lg → text-xl
-- Section headings: text-4xl → text-5xl
-- Maintain uppercase and tracking at all sizes
-
-**Layout Changes**:
-- Navigation: Hide nav links on < lg, show abbreviated CTA text on < sm
-- Stats: 2x2 grid with borders only on top 2 items (mobile) → 4-column with vertical borders (desktop)
-- All feature/blog/testimonial grids: Single column → 2-column (md) → 3-column (lg)
-- Pricing: Stack vertically → 3-column grid, highlighted card scale only on md+
-- Hero HUD: Hidden on mobile (lg:block)
-- Footer: Stack to single column → 4-column grid
-
-**Maintained Elements**:
-- Scanline overlay (full page)
-- Chamfered corners on all cards
-- Neon glow effects (may reduce intensity on mobile for performance)
-- Grid/circuit backgrounds
-- Monospace typography
-- Terminal aesthetic (>, $, prefixes)
-- Dark color scheme
-
-**Touch Targets**:
-- Minimum 44px height for all interactive elements
-- Adequate spacing between tappable items
-- FAQ accordions with full-width click area
-
----
-
-## 9. Accessibility
-
-**Contrast**: All text meets WCAG AA (accent green on dark bg = 7.5:1 ratio - excellent)
-
-**Focus States**:
-```css
-focus-visible:outline-none
-focus-visible:ring-2
-focus-visible:ring-accent
-focus-visible:ring-offset-2
-focus-visible:ring-offset-background
-```
-Plus add glow effect matching the neon aesthetic.
-
-**Reduced Motion**: Respect `prefers-reduced-motion` - disable glitch animations, keep static chromatic aberration
-
----
-
-## 10. Implementation Notes
-
-- Use Tailwind arbitrary values `[...]` extensively for custom shadows and clip-paths
-- CSS variables for colors enable easy theming
-- Scanlines implemented via CSS, not images
-- Glitch animations should be subtle and infrequent (not distracting)
-- Test glow effects on different screens (can look washed out on low contrast displays)
-- Consider GPU performance with multiple box-shadows - use `will-change: transform` sparingly
+*   **Contrast**: High contrast is built-in (black on cream, white on black, black on yellow). Ensure all color combinations pass WCAG AA (4.5:1 for normal text, 3:1 for large text).
+*   **Focus States**: Use thick focus rings:
+    ```css
+    focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2
+    ```
+    or background color change (yellow) for inputs.
+*   **Motion**: Respect `prefers-reduced-motion`:
+    ```css
+    @media (prefers-reduced-motion: reduce) {
+      .animate-spin-slow, .animate-bounce, .animate-pulse {
+        animation: none;
+      }
+    }
+    ```
+*   **Keyboard Navigation**: Ensure all interactive elements are keyboard-accessible. Tab order should be logical.
+*   **Screen Readers**: Use semantic HTML (`<button>`, `<nav>`, `<header>`, `<main>`). Add `aria-label` to icon-only buttons.
+*   **Touch Targets**: Minimum 44x44px (roughly `h-12` or `h-14` in Tailwind) for all tappable elements on mobile.
 </design-system>

@@ -1,214 +1,211 @@
 import { useState } from "react";
 import {
-  Activity,
   ArrowRight,
+  Boxes,
+  Check,
   ChevronDown,
-  Command,
-  Cpu,
-  Database,
-  Eye,
-  Gauge,
-  Layers,
-  Lock,
+  CircleDot,
+  ExternalLink,
+  Grid3X3,
+  Hand,
+  Layers3,
   Menu,
-  Radio,
-  Server,
-  Shield,
-  Terminal,
-  Wifi,
+  MousePointer2,
+  PencilRuler,
+  Send,
+  Sparkles,
+  Star,
   X,
   Zap,
   type LucideIcon,
 } from "lucide-react";
-import heroImage from "./assets/cyber-terminal-hero.png";
+import collageImage from "./assets/neo-brutal-collage.png";
 
-type CardItem = {
+type Principle = {
   icon: LucideIcon;
   title: string;
   body: string;
-  signal: string;
+  color: "red" | "yellow" | "violet" | "white";
 };
 
-type Tier = {
-  name: string;
-  price: string;
+type KitItem = {
   label: string;
-  items: string[];
-  featured?: boolean;
+  title: string;
+  body: string;
+  marker: string;
+  tilt: "left" | "right" | "none";
 };
 
-const navItems = ["Grid", "Signals", "Tiers", "Trace"];
+type FaqItem = {
+  question: string;
+  answer: string;
+};
 
-const metrics = [
-  { value: "93.7%", label: "Signal integrity" },
-  { value: "18 ms", label: "Trace latency" },
-  { value: "404", label: "Open ports" },
-  { value: "07", label: "Ghost relays" },
+const navItems = ["Style", "System", "Kit", "Rules"];
+
+const marqueeItems = [
+  "BORDER-4",
+  "HARD SHADOWS",
+  "NO BLUR",
+  "LOUD COLOR",
+  "STICKER LAYERS",
+  "PUSH BUTTONS",
+  "HALFTONE DOTS",
+  "RAW WEB",
 ];
 
-const protocolCards: CardItem[] = [
+const principles: Principle[] = [
   {
-    icon: Shield,
-    title: "Blackwall Sentinel",
-    body: "Volatile perimeter mapping with live breach heat and decoy injection.",
-    signal: "DEFCON 03",
+    icon: Boxes,
+    title: "Border first",
+    body: "Every visual object earns its place with a thick black stroke and a visible edge.",
+    color: "yellow",
   },
   {
-    icon: Cpu,
-    title: "Neural Packet Forge",
-    body: "Packet mutation pipelines built for hostile routes and dirty spectrum.",
-    signal: "CPU 81%",
+    icon: MousePointer2,
+    title: "Mechanical clicks",
+    body: "Buttons travel into their shadows instead of dissolving into soft hover states.",
+    color: "red",
   },
   {
-    icon: Radio,
-    title: "Rogue Relay Mesh",
-    body: "Encrypted repeaters hop across abandoned civic infrastructure.",
-    signal: "12 NODES",
+    icon: Layers3,
+    title: "Sticker stack",
+    body: "Rotated labels, badges, and cards overlap like a zine board that still obeys layout.",
+    color: "violet",
   },
   {
-    icon: Eye,
-    title: "Optic Noise Field",
-    body: "Signal masks scatter identity vectors before the trace can anchor.",
-    signal: "MASKED",
-  },
-  {
-    icon: Database,
-    title: "Cold Vault Index",
-    body: "Fragmented data stores rebuild only under rotating session keys.",
-    signal: "LOCKED",
-  },
-  {
-    icon: Zap,
-    title: "Surge Cutover",
-    body: "Mechanical failover swaps routes in a four-step impulse cycle.",
-    signal: "ARMED",
+    icon: Grid3X3,
+    title: "Pattern noise",
+    body: "Halftone, graph paper, and copy-shop texture replace polished gradients.",
+    color: "white",
   },
 ];
 
-const tiers: Tier[] = [
+const kitItems: KitItem[] = [
   {
-    name: "Street",
-    price: "09",
-    label: "Low-light reconnaissance",
-    items: ["2 ghost relays", "Manual trace scrub", "Terminal dispatch"],
+    label: "01 / Tokens",
+    title: "One palette, zero timidity",
+    body: "Cream canvas, pure black structure, hot red action, vivid yellow signal, and violet depth.",
+    marker: "#FFFDF5",
+    tilt: "left",
   },
   {
-    name: "Sprawl",
-    price: "27",
-    label: "Live breach orchestration",
-    items: ["12 ghost relays", "Automated decoys", "Priority signal vault"],
-    featured: true,
+    label: "02 / Type",
+    title: "Heavy words behave like blocks",
+    body: "Space Grotesk carries huge display headlines, stroked text, and compact uppercase labels.",
+    marker: "900",
+    tilt: "right",
   },
   {
-    name: "Void",
-    price: "64",
-    label: "Unregistered deep-grid access",
-    items: ["Unlimited relays", "Zero-noise masking", "Blackwall override"],
+    label: "03 / Components",
+    title: "Cards lift, buttons press, forms snap",
+    body: "Motion is physical and direct, with no blur, no glass, and no subtle gray states.",
+    marker: "4PX",
+    tilt: "none",
   },
 ];
 
-const faqs = [
+const checklist = [
+  "Thick black borders on containers",
+  "Hard offset shadows with zero blur",
+  "Text stroke display typography",
+  "Rotated stickers and overlapping badges",
+  "Marquee divider and halftone texture",
+  "Accessible focus and touch targets",
+];
+
+const faqs: FaqItem[] = [
   {
-    question: "Can the relay mesh run cold?",
+    question: "Why no subtle gray?",
     answer:
-      "Yes. Cold routes degrade visual telemetry but preserve identity shielding and packet mutation.",
+      "Neo-brutalism uses black as structure and color as signal. A middle gray makes the interface feel polite, which is the wrong energy here.",
   },
   {
-    question: "What happens during a trace spike?",
+    question: "Can it still be usable?",
     answer:
-      "The grid drops into step-based cutover, forks decoys, and isolates the hottest relay cluster.",
+      "Yes. The mess is planned: semantic HTML, high contrast, clear hit areas, and predictable stacked layouts keep the interface usable.",
   },
   {
-    question: "Is operator motion reduced?",
+    question: "What changes on mobile?",
     answer:
-      "The interface follows system reduced-motion preferences and freezes nonessential glitch cycles.",
+      "The same thick borders and shadows remain, but cards stack, shadows shrink, buttons stretch, and decorative chaos gets clipped.",
   },
 ];
 
-const terminalLines = [
-  "> boot blackice-grid --mode volatile",
-  "> handshake relay.12 / spectral port 404",
-  "> inject decoy packet: magenta-cyan-green",
-  "> route established: rainline-bunker-07",
-];
-
-function CyberButton({
+function BrutalButton({
   children,
   variant = "primary",
+  full = false,
 }: {
   children: React.ReactNode;
-  variant?: "primary" | "secondary" | "ghost" | "glitch";
+  variant?: "primary" | "secondary" | "outline" | "black";
+  full?: boolean;
 }) {
   return (
-    <button className={`cyber-button cyber-button--${variant}`} type="button">
+    <button
+      className={`brutal-button brutal-button--${variant} ${full ? "brutal-button--full" : ""}`}
+      type="button"
+    >
       <span>{children}</span>
-      <ArrowRight aria-hidden="true" size={18} strokeWidth={1.5} />
+      <ArrowRight aria-hidden="true" size={22} strokeWidth={3.2} />
     </button>
   );
 }
 
-function ProtocolCard({ item, index }: { item: CardItem; index: number }) {
+function Sticker({
+  children,
+  color = "yellow",
+  tilt = "right",
+}: {
+  children: React.ReactNode;
+  color?: "red" | "yellow" | "violet" | "black" | "white";
+  tilt?: "left" | "right" | "none";
+}) {
+  return <span className={`sticker sticker--${color} sticker--${tilt}`}>{children}</span>;
+}
+
+function PrincipleCard({ item, index }: { item: Principle; index: number }) {
   const Icon = item.icon;
 
   return (
-    <article className={`cyber-card protocol-card protocol-card--${index % 3}`}>
-      <div className="icon-cell" aria-hidden="true">
-        <Icon size={24} strokeWidth={1.5} />
+    <article className={`principle-card principle-card--${item.color} tilt-${index % 2 === 0 ? "left" : "right"}`}>
+      <div className="icon-block" aria-hidden="true">
+        <Icon size={34} strokeWidth={3.2} />
       </div>
-      <p className="micro-label">{item.signal}</p>
+      <p className="label">Rule 0{index + 1}</p>
       <h3>{item.title}</h3>
       <p>{item.body}</p>
     </article>
   );
 }
 
-function AccessTier({ tier }: { tier: Tier }) {
+function KitCard({ item }: { item: KitItem }) {
   return (
-    <article
-      className={`cyber-card tier-card ${tier.featured ? "tier-card--featured" : ""}`}
-    >
-      <p className="micro-label">{tier.label}</p>
-      <h3>{tier.name}</h3>
-      <div className="tier-price">
-        <span>{tier.price}</span>
-        <small>/cycle</small>
-      </div>
-      <ul>
-        {tier.items.map((item) => (
-          <li key={item}>
-            <Lock aria-hidden="true" size={16} strokeWidth={1.5} />
-            {item}
-          </li>
-        ))}
-      </ul>
-      <CyberButton variant={tier.featured ? "glitch" : "secondary"}>
-        Open route
-      </CyberButton>
+    <article className={`kit-card tilt-${item.tilt}`}>
+      <div className="kit-card__marker">{item.marker}</div>
+      <p className="label">{item.label}</p>
+      <h3>{item.title}</h3>
+      <p>{item.body}</p>
     </article>
   );
 }
 
-function FaqItem({
+function FaqRow({
   item,
-  isOpen,
+  open,
   onToggle,
 }: {
-  item: (typeof faqs)[number];
-  isOpen: boolean;
+  item: FaqItem;
+  open: boolean;
   onToggle: () => void;
 }) {
   return (
-    <div className="faq-item">
-      <button
-        className="faq-trigger"
-        type="button"
-        onClick={onToggle}
-        aria-expanded={isOpen}
-      >
+    <div className="faq-row">
+      <button className="faq-row__trigger" type="button" onClick={onToggle} aria-expanded={open}>
         <span>{item.question}</span>
-        <ChevronDown aria-hidden="true" className={isOpen ? "rotate" : ""} />
+        <ChevronDown aria-hidden="true" className={open ? "is-open" : ""} strokeWidth={3.2} />
       </button>
-      {isOpen ? <p>{item.answer}</p> : null}
+      {open ? <p>{item.answer}</p> : null}
     </div>
   );
 }
@@ -220,10 +217,11 @@ export default function App() {
   return (
     <div className="app-shell">
       <header className="site-header">
-        <a className="brand-mark" href="#top" aria-label="BLACKICE GRID home">
-          <Command aria-hidden="true" size={22} strokeWidth={1.5} />
-          <span>BLACKICE GRID</span>
+        <a className="logo" href="#top" aria-label="LOUDLAB home">
+          <Sparkles aria-hidden="true" size={24} strokeWidth={3.4} fill="currentColor" />
+          <span>LOUDLAB</span>
         </a>
+
         <nav className="desktop-nav" aria-label="Primary navigation">
           {navItems.map((item) => (
             <a key={item} href={`#${item.toLowerCase()}`}>
@@ -231,194 +229,208 @@ export default function App() {
             </a>
           ))}
         </nav>
-        <button className="header-cta" type="button">
-          <Activity aria-hidden="true" size={18} strokeWidth={1.5} />
-          <span>Live feed</span>
-        </button>
+
+        <BrutalButton variant="secondary">Remix it</BrutalButton>
+
         <button
           className="menu-button"
           type="button"
-          onClick={() => setMenuOpen((value) => !value)}
           aria-label="Toggle navigation menu"
           aria-expanded={menuOpen}
+          onClick={() => setMenuOpen((value) => !value)}
         >
-          {menuOpen ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}
+          {menuOpen ? <X aria-hidden="true" strokeWidth={3.4} /> : <Menu aria-hidden="true" strokeWidth={3.4} />}
         </button>
       </header>
 
       {menuOpen ? (
         <nav className="mobile-nav" aria-label="Mobile navigation">
           {navItems.map((item) => (
-            <a
-              key={item}
-              href={`#${item.toLowerCase()}`}
-              onClick={() => setMenuOpen(false)}
-            >
+            <a key={item} href={`#${item.toLowerCase()}`} onClick={() => setMenuOpen(false)}>
               {item}
+              <ExternalLink aria-hidden="true" size={18} strokeWidth={3} />
             </a>
           ))}
         </nav>
       ) : null}
 
       <main id="top">
-        <section
-          className="hero-section"
-          style={{ "--hero-image": `url(${heroImage})` } as React.CSSProperties}
-        >
-          <div className="hero-overlay" />
-          <div className="hero-content">
-            <p className="micro-label">Encrypted civic mesh / 2097.06</p>
-            <h1 className="glitch-title" data-text="BLACKICE GRID">
-              BLACKICE GRID
+        <section className="hero-section">
+          <div className="hero-copy">
+            <Sticker color="yellow" tilt="left">
+              Anti-smooth interface kit
+            </Sticker>
+            <h1>
+              <span>MAKE</span>
+              <span className="stroke-text">NOISE</span>
+              <span>VISIBLE</span>
             </h1>
-            <p className="type-line">
-              Hostile signal command for operators inside the neon sprawl
-              <span aria-hidden="true" />
+            <p>
+              A full Neo-brutalist rebuild: thick borders, hard shadows, sticker layering,
+              loud color blocks, and tactile interactions that refuse to disappear.
             </p>
-            <div className="hero-actions" aria-label="Primary actions">
-              <CyberButton variant="glitch">Start trace</CyberButton>
-              <CyberButton variant="primary">Inspect grid</CyberButton>
+            <div className="hero-actions">
+              <BrutalButton variant="primary">Start loud</BrutalButton>
+              <BrutalButton variant="outline">Inspect tokens</BrutalButton>
             </div>
           </div>
 
-          <aside className="hero-hud" aria-label="Live grid readout">
-            <div className="hud-header">
-              <Terminal aria-hidden="true" size={18} strokeWidth={1.5} />
-              <span>relay.terminal</span>
+          <aside className="hero-board" aria-label="Neo-brutalist visual collage">
+            <img src={collageImage} alt="Neo-brutalist collage of bordered web windows, arrows, halftone dots, stars, and color blocks" />
+            <div className="floating-badge floating-badge--top">
+              <Star aria-hidden="true" size={24} strokeWidth={3.5} fill="currentColor" />
+              RAW WEB
             </div>
-            <div className="hud-grid">
-              <span>Noise</span>
-              <strong>11.4 db</strong>
-              <span>Route</span>
-              <strong>Tokyo-07</strong>
-              <span>Pulse</span>
-              <strong>88 hz</strong>
-            </div>
-            <div className="signal-bars" aria-hidden="true">
-              <i />
-              <i />
-              <i />
-              <i />
-              <i />
-            </div>
+            <div className="floating-badge floating-badge--bottom">4PX OR BUST</div>
           </aside>
+
+          <div className="shape shape--red" aria-hidden="true" />
+          <div className="shape shape--violet" aria-hidden="true" />
         </section>
 
-        <section className="stats-strip" aria-label="Grid metrics">
-          {metrics.map((metric) => (
-            <div key={metric.label}>
-              <strong>{metric.value}</strong>
-              <span>{metric.label}</span>
-            </div>
-          ))}
-        </section>
-
-        <section className="section terminal-section" id="grid">
-          <div className="section-heading">
-            <p className="micro-label">Operator console</p>
-            <h2>Dirty routes, clean decisions.</h2>
+        <section className="marquee-section" aria-label="Neo-brutalist style signatures">
+          <div className="marquee-track">
+            {[...marqueeItems, ...marqueeItems].map((item, index) => (
+              <span key={`${item}-${index}`}>
+                <Zap aria-hidden="true" size={24} strokeWidth={3.2} fill="currentColor" />
+                {item}
+              </span>
+            ))}
           </div>
-          <div className="terminal-panel">
-            <div className="terminal-bar">
-              <span />
-              <span />
-              <span />
+        </section>
+
+        <section className="section manifesto-section" id="style">
+          <div className="section-heading">
+            <p className="label">Style manifesto</p>
+            <h2>Anti-corporate, high contrast, physically clickable.</h2>
+          </div>
+          <div className="manifesto-grid">
+            {principles.map((item, index) => (
+              <PrincipleCard key={item.title} item={item} index={index} />
+            ))}
+          </div>
+        </section>
+
+        <section className="section split-section" id="system">
+          <div className="poster-stack" aria-hidden="true">
+            <div className="poster poster--yellow">
+              <span>01</span>
+              <strong>BLACK LINES</strong>
             </div>
-            <div className="terminal-body">
-              {terminalLines.map((line) => (
-                <p key={line}>{line}</p>
-              ))}
+            <div className="poster poster--red">
+              <span>02</span>
+              <strong>HARD SHADOW</strong>
+            </div>
+            <div className="poster poster--violet">
+              <span>03</span>
+              <strong>LOUD TYPE</strong>
+            </div>
+          </div>
+
+          <div className="system-copy">
+            <Sticker color="red" tilt="right">
+              Token system
+            </Sticker>
+            <h2>
+              Design tokens that hit the table with a <span>thud.</span>
+            </h2>
+            <p>
+              The system is intentionally small and definitive: black for structure,
+              cream for paper, three saturated paints for rhythm, and sharp rectangles
+              for almost everything.
+            </p>
+            <div className="swatch-grid" aria-label="Neo-brutalist color palette">
+              <span className="swatch swatch--cream">Cream</span>
+              <span className="swatch swatch--red">Red</span>
+              <span className="swatch swatch--yellow">Yellow</span>
+              <span className="swatch swatch--violet">Violet</span>
+              <span className="swatch swatch--black">Black</span>
+            </div>
+          </div>
+        </section>
+
+        <section className="section kit-section" id="kit">
+          <div className="section-heading">
+            <p className="label">Component kit</p>
+            <h2>Reusable parts, deliberately unsubtle.</h2>
+          </div>
+          <div className="kit-grid">
+            {kitItems.map((item) => (
+              <KitCard key={item.title} item={item} />
+            ))}
+          </div>
+        </section>
+
+        <section className="interaction-lab">
+          <div className="lab-panel">
+            <div>
+              <p className="label">Interaction lab</p>
+              <h2>Push the block. Watch it answer.</h2>
               <p>
-                &gt; awaiting operator input
-                <span className="cursor" aria-hidden="true" />
+                Focus changes are visible, buttons press into the page, and controls keep
+                generous touch targets without becoming generic mobile UI.
               </p>
             </div>
+            <form className="signup-form" onSubmit={(event) => event.preventDefault()}>
+              <label htmlFor="email">Drop your loudest interface note</label>
+              <div className="input-row">
+                <input id="email" type="email" placeholder="designer@example.com" />
+                <button type="submit" aria-label="Send note">
+                  <Send aria-hidden="true" size={24} strokeWidth={3.2} />
+                </button>
+              </div>
+            </form>
           </div>
         </section>
 
-        <section className="section protocol-section" id="signals">
-          <div className="section-heading section-heading--wide">
-            <p className="micro-label">Protocol matrix</p>
-            <h2>Signal architecture for unstable streets.</h2>
-          </div>
-          <div className="protocol-grid">
-            {protocolCards.map((item, index) => (
-              <ProtocolCard key={item.title} item={item} index={index} />
-            ))}
-          </div>
-        </section>
-
-        <section className="section split-section">
-          <div className="visual-stack" aria-hidden="true">
-            <div className="radar-dial">
-              <Gauge size={42} strokeWidth={1.5} />
-              <span />
+        <section className="section rules-section" id="rules">
+          <div className="rules-card">
+            <div className="rules-card__header">
+              <Hand aria-hidden="true" size={42} strokeWidth={3.2} />
+              <h2>Completion rules</h2>
             </div>
-            <div className="route-map">
-              <i />
-              <i />
-              <i />
-              <i />
-            </div>
-          </div>
-          <div className="split-copy">
-            <p className="micro-label">Asymmetric cutover</p>
-            <h2>Every route can lie. The grid still has to answer.</h2>
-            <p>
-              BLACKICE GRID treats interference as terrain. Trace heat, relay
-              decay, and identity drift collapse into one operator surface built
-              for rapid, mechanical choices.
-            </p>
-            <div className="chip-row" aria-label="Active modules">
-              <span>
-                <Server aria-hidden="true" size={16} strokeWidth={1.5} />
-                relay farm
-              </span>
-              <span>
-                <Layers aria-hidden="true" size={16} strokeWidth={1.5} />
-                packet strata
-              </span>
-              <span>
-                <Wifi aria-hidden="true" size={16} strokeWidth={1.5} />
-                ghost band
-              </span>
+            <div className="check-grid">
+              {checklist.map((item) => (
+                <div key={item}>
+                  <Check aria-hidden="true" size={22} strokeWidth={3.4} />
+                  <span>{item}</span>
+                </div>
+              ))}
             </div>
           </div>
-        </section>
 
-        <section className="section tiers-section" id="tiers">
-          <div className="section-heading">
-            <p className="micro-label">Access tiers</p>
-            <h2>Choose the depth of the breach.</h2>
-          </div>
-          <div className="tiers-grid">
-            {tiers.map((tier) => (
-              <AccessTier key={tier.name} tier={tier} />
-            ))}
-          </div>
-        </section>
-
-        <section className="section trace-section" id="trace">
-          <div className="section-heading">
-            <p className="micro-label">Trace log</p>
-            <h2>Noise remembers the operator.</h2>
-          </div>
-          <div className="faq-list">
+          <div className="faq-card">
+            <p className="label">Questions</p>
             {faqs.map((item, index) => (
-              <FaqItem
+              <FaqRow
                 key={item.question}
                 item={item}
-                isOpen={openFaq === index}
+                open={openFaq === index}
                 onToggle={() => setOpenFaq((value) => (value === index ? -1 : index))}
               />
             ))}
           </div>
         </section>
+
+        <section className="closing-banner">
+          <div>
+            <CircleDot aria-hidden="true" size={46} strokeWidth={3.2} />
+            <span>NO BLUR</span>
+          </div>
+          <div>
+            <PencilRuler aria-hidden="true" size={46} strokeWidth={3.2} />
+            <span>NO GRAY</span>
+          </div>
+          <div>
+            <Star aria-hidden="true" size={46} strokeWidth={3.2} fill="currentColor" />
+            <span>NO WHISPER</span>
+          </div>
+        </section>
       </main>
 
       <footer className="site-footer">
-        <span>BLACKICE GRID</span>
-        <span>signal::2097 / relay::tokyo-07 / status::volatile</span>
+        <strong>LOUDLAB</strong>
+        <span>Neo-brutalist design system rebuilt from DESIGN.md</span>
       </footer>
     </div>
   );
