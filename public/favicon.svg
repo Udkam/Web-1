@@ -1,7 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="LOUDLAB">
-  <rect width="64" height="64" fill="#FFFDF5"/>
-  <rect x="9" y="13" width="39" height="38" fill="#FFD93D" stroke="#000" stroke-width="5"/>
-  <rect x="19" y="8" width="36" height="30" fill="#FF6B6B" stroke="#000" stroke-width="5"/>
-  <path d="M18 45 46 17M18 17l28 28" stroke="#000" stroke-width="5" stroke-linecap="square"/>
-  <circle cx="47" cy="48" r="9" fill="#C4B5FD" stroke="#000" stroke-width="5"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Foldcraft">
+  <rect width="64" height="64" rx="14" fill="#050505"/>
+  <path d="M18 17h31v8H27v9h18v8H27v15h-9V17Z" fill="#fff"/>
+  <path d="M49 17 18 57" stroke="#fff" stroke-opacity=".38" stroke-width="3"/>
 </svg>

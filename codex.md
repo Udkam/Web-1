@@ -89,3 +89,40 @@
 - Risks and next steps:
   - The raster collage is about 2.5 MB in production output; optimize or add responsive variants if performance becomes the next priority.
   - Local Vite server was used for verification and must be closed before finishing this task.
+
+## 2026-06-26 Foldcraft fullscreen video hero
+
+### Phase 1 - Replace Neo-brutalism page with Foldcraft prompt
+
+- Actions taken:
+  - Re-read the updated `DESIGN.md`; the requested design is now a one-screen Foldcraft creative-studio landing page.
+  - Added Tailwind CSS v3 with `tailwind.config.cjs`, `postcss.config.cjs`, and a `fontFamily.geist` extension.
+  - Added Geist Google Font links in `index.html` and replaced the document title/description with Foldcraft metadata.
+  - Rewrote `src/App.tsx` as a fullscreen `h-screen` video hero with responsive navbar, desktop CTA, mobile menu overlay, animated Menu/X icon, staggered hero text, and CTA button with `ArrowRight`.
+  - Rewrote `src/styles.css` to Tailwind directives plus the requested CSS reset, font smoothing, black body background, and `fadeSlideUp` keyframes.
+  - Added a small React video ref/play fallback so the muted autoplay video reliably advances in browser verification.
+  - Replaced negative `tracking-tight` letter spacing with `tracking-normal` to keep text spacing at zero under the frontend design guardrails.
+  - Removed the previous Neo-brutalist raster collage asset because this prompt uses a remote looping video instead.
+- Verification:
+  - `npm run build` passed.
+  - Playwright QA passed: 2 tests covering desktop `1440x1000` and mobile `390x844`.
+  - Desktop QA confirmed title `Foldcraft`, no horizontal overflow, `h-screen` + `font-geist` root, hero height over `850`, required copy, video URL and `autoPlay/muted/loop/playsInline`, `object-[70%_center]`, desktop nav, desktop "Let's Talk", and no undersized visible targets.
+  - Mobile QA confirmed no horizontal overflow, required CTA copy, no undersized visible targets, mobile menu button visible, menu opens with `aria-expanded="true"`, mobile nav shows links, and selecting `Projects` closes the menu.
+  - Additional video check after 5 seconds confirmed `readyState: 3`, `videoWidth: 1920`, `videoHeight: 1080`, `paused: false`, and advancing `currentTime`.
+  - Final guardrail check found no `tracking-tight`, arbitrary tracking, or custom `letter-spacing` usage, and the final `npm run build` passed.
+  - Screenshots saved under ignored `verification/`: `foldcraft-desktop-1440x1000.png`, `foldcraft-mobile-390x844.png`, and `foldcraft-desktop-wait5s.png`.
+- Changed files:
+  - `DESIGN.md`
+  - `index.html`
+  - `package.json`
+  - `package-lock.json`
+  - `postcss.config.cjs`
+  - `tailwind.config.cjs`
+  - `public/favicon.svg`
+  - `src/App.tsx`
+  - `src/styles.css`
+  - `src/assets/neo-brutal-collage.png`
+  - `codex.md`
+- Risks and next steps:
+  - The hero depends on a remote CloudFront video; if that URL becomes unavailable, the page falls back visually to black.
+  - Local Vite server was used for verification and must be closed before finishing this task.
