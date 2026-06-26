@@ -31,3 +31,25 @@
 - Risks and next steps:
   - Browser rendering still needs live visual verification across desktop and mobile.
   - After browser checks, adjust spacing/text overlap if needed, then commit and push the verified pass.
+
+### Phase 2 - Browser verification and polish
+
+- Actions taken:
+  - Added a project favicon and ignored local verification/log artifacts.
+  - Increased header brand and desktop navigation hit areas to meet minimum interactive target sizing.
+  - Verified mobile menu and FAQ interactions with Playwright.
+- Verification:
+  - `npm run build` passed after polish changes.
+  - Playwright desktop check at `1440x1000`: no horizontal overflow, hero height `880`, stats section begins at `846`, no visible targets below `44px`.
+  - Playwright mobile check at `390x844`: no horizontal overflow, hero height `709`, stats section begins at `675`, no visible targets below `44px`.
+  - Playwright interaction check: mobile nav opened with 4 links, closed after navigation, FAQ expansion set `aria-expanded="true"` and displayed the expected answer.
+  - Console check: favicon 404 was fixed; remaining console entries are React DevTools development info messages.
+- Changed files:
+  - `.gitignore`
+  - `index.html`
+  - `public/favicon.svg`
+  - `src/styles.css`
+  - `codex.md`
+- Risks and next steps:
+  - The generated hero image is intentionally large for visual fidelity; optimize or add responsive image variants if this becomes a performance target.
+  - Vite dev server is running locally at `http://127.0.0.1:5173/` for review.

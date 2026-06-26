@@ -166,6 +166,7 @@ a {
   display: inline-flex;
   gap: 10px;
   align-items: center;
+  min-height: 44px;
   color: var(--accent);
   font-family: var(--font-heading);
   font-weight: 900;
@@ -182,6 +183,12 @@ a {
 }
 
 .desktop-nav a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 4px;
   transition: color 120ms steps(3), text-shadow 120ms steps(3);
 }
 

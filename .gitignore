@@ -1,6 +1,10 @@
 node_modules
 dist
 dist-ssr
+.playwright-mcp
+verification
+vite-dev.log
+vite-dev.err.log
 *.local
 .DS_Store
 npm-debug.log*
