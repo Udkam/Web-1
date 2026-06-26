@@ -201,3 +201,24 @@
 - Risks and next steps:
   - The custom filled path now prioritizes the provided reference stroke geometry over exact font-glyph fidelity; `Mr Dafoe` remains loaded from the prior phase, but the visible corrected shape is vector-drawn for animation control.
   - Local Vite verification is still running on port `5174` during this phase and must be closed before finishing.
+
+### Phase 3 - Restore Mr Dafoe glyphs and repair stroke details
+
+- Actions taken:
+  - Responded to the follow-up feedback that the font was wrong, the `4` second stroke was too short, and the `c` rendering was broken.
+  - Replaced the custom visible `4c` fill paths with real SVG `<text>` glyphs using `font-family: "Mr Dafoe", cursive`.
+  - Kept the accepted first-stroke reveal path, extended the second-stroke mask path, and added a same-color fill-only second-stroke extension because the real Mr Dafoe `4` glyph has a short native downstroke.
+  - Rebuilt the `c` as a real Mr Dafoe glyph instead of a self-intersecting custom path, then positioned and enlarged it while keeping the counterclockwise mask reveal.
+  - Enlarged the SVG viewBox height so the extended second stroke is not clipped, and reduced mobile signature size so it no longer covers the hero title.
+- Verification:
+  - `npm run build` passed.
+  - `git diff --check` passed.
+  - System-browser Playwright verification after `document.fonts.ready` confirmed `Mr Dafoe` was loaded, desktop/mobile had no horizontal overflow, all final reveal offsets reached `0px`, the `4` and `c` glyphs used `"Mr Dafoe", cursive`, and all visible glyph/extension shapes had `stroke: none`.
+  - Screenshots saved under ignored `verification/`: `four-c-mr-dafoe-final-after-first.png`, `four-c-mr-dafoe-final-after-second.png`, `four-c-mr-dafoe-final-desktop.png`, and `four-c-mr-dafoe-final-mobile.png`.
+- Changed files:
+  - `src/App.tsx`
+  - `src/styles.css`
+  - `codex.md`
+- Risks and next steps:
+  - The visible `4c` now uses real Mr Dafoe glyphs again; only the extra lower part of the `4` second stroke is a fill-only vector extension to satisfy the requested longer second stroke.
+  - Local Vite verification used port `5173` and must be closed before finishing this task.

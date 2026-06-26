@@ -111,16 +111,27 @@ button {
   filter: drop-shadow(0 18px 34px rgba(0, 0, 0, 0.34));
 }
 
-.four-c-shape {
+.four-c-glyph {
+  font-family: "Mr Dafoe", cursive;
+  font-size: 560px;
+  font-weight: 400;
+  letter-spacing: 0;
+  paint-order: fill;
   stroke: none;
 }
 
-.four-c-shape--four {
+.four-c-glyph--four {
   fill: #e8eff8;
 }
 
-.four-c-shape--c {
+.four-c-glyph--c {
   fill: #2bd3be;
+  font-size: 640px;
+}
+
+.four-c-stem-extension {
+  fill: #e8eff8;
+  stroke: none;
 }
 
 .four-c-reveal {
@@ -136,11 +147,11 @@ button {
 
 .four-c-reveal--second {
   animation-delay: 1.7s;
-  animation-duration: 0.88s;
+  animation-duration: 1.05s;
 }
 
 .four-c-reveal--third {
-  animation-delay: 2.62s;
+  animation-delay: 2.76s;
   animation-duration: 1.72s;
 }
 
@@ -1066,8 +1077,8 @@ button {
 
   .four-c-signature {
     right: 0.75rem;
-    top: 5.1rem;
-    width: 214px;
+    top: 4.85rem;
+    width: 184px;
     opacity: 0.84;
   }
 
@@ -1116,8 +1127,8 @@ button {
   }
 
   .four-c-signature {
-    top: 5.25rem;
-    width: 184px;
+    top: 4.75rem;
+    width: 150px;
   }
 
   .hero-copy {

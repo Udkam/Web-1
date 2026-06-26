@@ -464,7 +464,7 @@ function Waves({
 function FourCSignature() {
   return (
     <div className="four-c-signature" aria-label="4c writing animation">
-      <svg viewBox="0 0 980 560" role="img">
+      <svg viewBox="0 0 980 700" role="img">
         <title>4c</title>
         <defs>
           <mask id="four-first-stroke-mask" maskUnits="userSpaceOnUse">
@@ -482,46 +482,44 @@ function FourCSignature() {
           <mask id="four-second-stroke-mask" maskUnits="userSpaceOnUse">
             <path
               className="four-c-reveal four-c-reveal--second"
-              d="M 502 188 C 438 273 344 408 236 538"
+              d="M 536 66 C 481 185 401 334 303 477 C 249 557 203 642 168 724"
               fill="none"
               pathLength="1"
               stroke="#fff"
               strokeLinecap="round"
               strokeLinejoin="round"
-              strokeWidth="132"
+              strokeWidth="218"
             />
           </mask>
           <mask id="c-stroke-mask" maskUnits="userSpaceOnUse">
             <path
               className="four-c-reveal four-c-reveal--third"
-              d="M 796 262 C 721 226 600 250 526 321 C 455 389 477 459 563 466 C 665 474 799 402 923 305"
+              d="M 820 230 C 720 190 554 218 461 310 C 382 388 420 476 544 473 C 659 470 765 389 921 271"
               fill="none"
               pathLength="1"
               stroke="#fff"
               strokeLinecap="round"
               strokeLinejoin="round"
-              strokeWidth="154"
+              strokeWidth="190"
             />
           </mask>
         </defs>
 
-        <g className="four-c-shapes">
+        <g className="four-c-glyphs">
+          <text className="four-c-glyph four-c-glyph--four" x="18" y="504" mask="url(#four-first-stroke-mask)">
+            4
+          </text>
+          <text className="four-c-glyph four-c-glyph--four" x="18" y="504" mask="url(#four-second-stroke-mask)">
+            4
+          </text>
           <path
-            className="four-c-shape four-c-shape--four"
-            d="M 506 21 C 376 82 196 244 91 391 C 59 435 54 480 82 509 C 116 544 187 511 273 496 C 373 478 480 486 542 520 C 566 533 586 500 567 480 C 526 436 428 418 319 420 C 245 421 181 438 132 460 C 176 346 349 166 526 67 C 552 52 536 7 506 21 Z"
-            mask="url(#four-first-stroke-mask)"
-          />
-          <path
-            className="four-c-shape four-c-shape--four"
-            d="M 485 161 C 402 259 313 391 230 515 C 207 549 247 581 274 546 C 357 440 445 310 526 204 C 546 178 510 132 485 161 Z"
+            className="four-c-stem-extension"
+            d="M 395 383 C 350 455 306 548 256 646 C 242 674 203 667 213 635 C 253 512 314 429 350 385 C 364 367 386 368 395 383 Z"
             mask="url(#four-second-stroke-mask)"
           />
-          <path
-            className="four-c-shape four-c-shape--c"
-            d="M 761 220 C 685 198 562 237 502 320 C 444 402 489 482 589 480 C 685 478 795 414 924 312 C 951 291 930 251 901 269 C 795 339 708 396 626 422 C 563 442 523 421 540 374 C 562 315 644 269 725 261 C 776 256 801 273 799 296 C 797 324 748 354 683 366 C 650 371 628 368 611 362 C 632 388 681 394 735 376 C 808 352 848 301 825 260 C 813 239 793 227 761 220 Z M 753 278 C 720 275 660 289 637 318 C 659 323 700 318 734 305 C 761 294 774 282 753 278 Z"
-            fillRule="evenodd"
-            mask="url(#c-stroke-mask)"
-          />
+          <text className="four-c-glyph four-c-glyph--c" x="386" y="514" mask="url(#c-stroke-mask)">
+            c
+          </text>
         </g>
       </svg>
     </div>
