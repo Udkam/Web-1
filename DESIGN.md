@@ -1,71 +1,77 @@
-* Create a fullscreen hero landing page for a creative studio called "Foldcraft" using React, Tailwind CSS, and Lucide React icons. The page is a single viewport-height section with a looping background video, a responsive navbar, a mobile menu, and staggered-animated hero text.
+* Build a fullscreen hero landing page for a creative agency called "VANGUARD" using React, Tailwind CSS, and Vite. The page should be a single viewport-height section with a looping background video and all content overlaid on top.
 
-  **Video Background:**
-  - URL: `https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260622_204221_5339e40b-e73d-4ab0-9c65-79c18c66fd50.mp4`
-  - Attributes: autoPlay, muted, loop, playsInline
-  - Styling: absolute positioned, full width/height, object-cover, object-position at 70% horizontal center
-  - The video sits behind all content (no z-index or z-0)
+  **Background video:**
+  Use this exact CloudFront URL as a fullscreen `<video>` element with `autoPlay`, `muted`, `loop`, and `playsInline` attributes, set to `object-cover` to fill the entire viewport:
+  ```
+  https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260606_154941_df1a96e1-a06f-450c-bd02-d863414cc1a0.mp4
+  ```
 
-  **Font:**
-  - Google Fonts: Geist (weights 300-700), loaded via `<link>` in index.html
-  - Tailwind config extends fontFamily with `geist: ['Geist', 'sans-serif']`
-  - Applied as `font-geist` on the root container
-  - Body CSS: `-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale`
+  **Fonts (loaded in index.html):**
+  1. "FSP DEMO - PODIUM Sharp 4.11" from `https://db.onlinewebfonts.com/c/8b75d9dcff6a48c35a46656192adf019?family=FSP+DEMO+-+PODIUM+Sharp+4.11` -- used for the brand name and main heading. Create a `.font-podium` utility class for it and register it in tailwind.config.js as `fontFamily.podium`.
+  2. "Inter" from Google Fonts (weights 400, 500, 600, 700) -- used for body text, nav links, stats, and CTAs. Register it in tailwind.config.js as `fontFamily.inter`.
 
-  **Root Container:**
-  - `relative h-screen w-full overflow-hidden bg-black font-geist`
+  **Icons:** Use `lucide-react` for all icons: `ArrowUpRight`, `Award`, `Crown`, and `X`.
 
-  **Navbar (z-30):**
-  - Flex, space-between, padding: `px-6 py-5 md:px-12 lg:px-16`
-  - Left side: Logo text "Foldcraft" (`text-lg font-semibold tracking-tight text-white sm:text-xl`) followed by desktop nav links (hidden on mobile, flex on md+)
-  - Nav links: Home, Projects, Studio, Reach Us (`text-sm text-white/80 hover:text-white transition-colors`)
-  - Right side (desktop): "Let's Talk" button (`rounded-lg bg-white px-5 py-2 text-sm font-medium text-black hover:scale-105 transition-transform`)
-  - Right side (mobile): hamburger toggle button (40x40, z-50) with animated Menu/X icons from lucide-react. Menu rotates 90deg out and X rotates in with opacity and scale transitions (duration-300). Button has `active:scale-90`.
+  **Navbar:**
+  - Horizontal bar at the top with responsive padding (`px-6 sm:px-10 lg:px-16`, `py-5 lg:py-7`).
+  - Left: brand name "VANGUARD" in `font-podium`, white, bold, uppercase, `text-2xl sm:text-3xl`, `tracking-wider`.
+  - Center (hidden below `md`): four nav links -- "Projects", "Studio", "Offerings", "Inquire" -- in `font-inter`, `text-sm`, `text-white/80`, `tracking-widest`, uppercase, with `hover:text-white` transition.
+  - Right (hidden below `md`): a "GET IN TOUCH" link with an `ArrowUpRight` icon, styled as a bordered button (`border border-white/30 hover:border-white/60`, `px-6 py-3`, `text-xs`, `tracking-widest`, uppercase, `hover:bg-white/10`).
+  - Right (visible below `md`): a hamburger button made of three white `div` bars (`w-6 h-0.5`, `w-6 h-0.5`, `w-4 h-0.5` with `space-y-1.5`).
 
-  **Mobile Menu (z-20):**
-  - Absolute, `inset-x-0 top-0`, full-screen overlay with `bg-black/98 backdrop-blur-xl`
-  - Transition: `duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]` toggling between `h-screen opacity-100` and `h-0 opacity-0 pointer-events-none`
-  - Inner content: centered vertically (`flex h-full flex-col justify-center px-8`), with a delayed fade + translate animation (delay-100, translate-y-8)
-  - Links: Home, Projects, Studio, Reach Us (`text-3xl font-medium text-white/90 hover:text-white`)
-  - Button: "Let's Talk" (`mt-6 rounded-full bg-white px-8 py-3.5 text-base font-medium text-black hover:scale-105`)
-  - All links/button call `setMobileMenuOpen(false)` on click
+  **Mobile Menu Overlay (below `md` only):**
+  - Fixed fullscreen overlay (`fixed inset-0 z-50`) with `bg-black/95 backdrop-blur-sm`.
+  - Toggles visibility via React `useState` -- when open: `opacity-100 visible`, when closed: `opacity-0 invisible`, with `transition-all duration-500`.
+  - Header row matches the navbar: brand name on left, `X` close icon on right.
+  - Centered vertically: each of the 4 nav links rendered in `font-podium`, `text-4xl sm:text-5xl`, white, uppercase, with staggered entrance animations using inline `style` -- each item gets `transitionDelay: i * 80 + 100ms`, `opacity` and `translateY(20px)` transitions based on the open state.
+  - Below the links: a "GET IN TOUCH" bordered button with the same staggered animation pattern.
+  - All links call `setMenuOpen(false)` on click.
 
-  **Hero Content (z-10):**
-  - Flex column, justify-between, fills remaining height: `h-[calc(100vh-80px)]`
-  - Padding: `px-6 pb-10 pt-12 sm:pb-12 sm:pt-16 md:px-12 md:pb-16 md:pt-20 lg:px-16`
+  **Hero Content (vertically centered, left-aligned):**
+  All hero elements use staggered `animate-fade-up` animations (defined in CSS as `@keyframes fade-up` translating from `translateY(30px), opacity:0` to `translateY(0), opacity:1` over `0.8s ease-out`). Each successive element has an additional `0.2s` delay. Elements start with `opacity: 0` and use `animation-fill-mode: forwards`.
 
-  **Top Section (max-w-3xl):**
-  - Badge: "Brand & Visual Storytelling" (`text-xs sm:text-sm text-white/90`), with `animate-[fadeSlideUp_0.8s_ease_0.2s_both]`, margin-bottom 4 (sm:6)
-  - Heading h1: "Shaping visual / narratives, / one pixel at a time." with `<br/>` line breaks
-    - Sizing: `text-3xl sm:text-5xl md:text-6xl lg:text-7xl`
-    - Style: `font-medium leading-[1.1] tracking-tight text-white`
-    - Animation: `animate-[fadeSlideUp_0.8s_ease_0.4s_both]`
+  1. **Tagline:** A `Crown` icon (lucide, `w-4 h-4`, `text-white/70`) followed by "World-Class Digital Collective" in `text-white/70`, `text-xs sm:text-sm`, `font-inter`, `tracking-[0.3em]`, uppercase. Uses `animate-fade-up` (no delay). Has `mb-6 lg:mb-8`.
 
-  **Bottom Section:**
-  - Paragraph: "Turning vision into reality through craft, motion, and an endless pursuit of beauty."
-    - Style: `text-sm sm:text-base md:text-lg leading-relaxed text-white/60 max-w-sm sm:max-w-lg mb-5 sm:mb-6`
-    - Animation: `animate-[fadeSlideUp_0.8s_ease_0.7s_both]`
-  - CTA Button: "Explore Work" with ArrowRight icon (size 16)
-    - Style: `rounded-lg bg-white px-5 py-2.5 sm:px-6 sm:py-3 text-sm font-medium text-black hover:scale-105 transition-transform inline-flex items-center gap-2`
-    - Animation: `animate-[fadeSlideUp_0.8s_ease_0.9s_both]`
+  2. **Main Heading:** Three lines in `font-podium`, white, uppercase, `leading-[0.92]`, `tracking-tight`, each using `text-[clamp(2.8rem,8vw,7rem)]`:
+     - "Design."
+     - "Disrupt."
+     - "Conquer."
+     Uses `animate-fade-up-delay-1` (0.2s delay).
 
-  **CSS Animation (in index.css):**
+  3. **Subtext:** "We build fierce brand identities" (line break) "that don't just turn heads --" then bold white "they lead." in `text-white/70`, `text-sm sm:text-base`, `font-inter`, `leading-relaxed`, `max-w-md`. Uses `animate-fade-up-delay-2` (0.4s delay). `mt-6 lg:mt-8`.
+
+  4. **CTA Row:** Uses `animate-fade-up-delay-3` (0.6s delay), `mt-8 lg:mt-10`, `flex flex-wrap items-center gap-4 sm:gap-6`.
+     - Black button "SEE OUR WORK" with `ArrowUpRight` icon. `bg-black hover:bg-neutral-900`, `px-5 sm:px-7 py-3 sm:py-4`, `text-[11px] sm:text-xs`, `tracking-widest`, uppercase. Arrow has `group-hover:translate-x-0.5 group-hover:-translate-y-0.5` transition.
+     - Beside it (hidden on mobile, `hidden sm:flex`): an `Award` icon (`w-8 h-8`, `text-white/50`) with two lines of text: "Top-Rated" / "Brand Studio" in `text-white/60`, `text-xs`, `tracking-wider`, uppercase.
+
+  5. **Stats Row:** Uses `animate-fade-up-delay-4` (0.8s delay), `mt-8 sm:mt-10 lg:mt-14`, `flex flex-wrap gap-6 sm:gap-12 lg:gap-16`. Three stats:
+     - "250+" / "Brands Transformed"
+     - "95%" / "Client Retention"
+     - "10+" / "Years in the Game"
+     Values in `font-inter`, white, `text-2xl sm:text-4xl lg:text-5xl`, bold, `tracking-tight`. Labels in `text-white/50`, `text-[9px] sm:text-xs`, `tracking-widest`, uppercase, `mt-1`.
+
+  **CSS Animations (defined in index.css under `@layer utilities`):**
   ```css
-  @keyframes fadeSlideUp {
-    from {
-      opacity: 0;
-      transform: translateY(24px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes scale-in {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
   }
   ```
+  With classes: `.animate-fade-up` (0s delay), `.animate-fade-up-delay-1` through `.animate-fade-up-delay-4` (0.2s increments, starting `opacity: 0`), `.animate-fade-in`, `.animate-fade-in-delay`.
 
-  **CSS Reset (in index.css):**
-  ```css
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  ```
+  **Responsive behavior:**
+  - Full layout is mobile-first with breakpoints at `sm` (640px), `md` (768px), and `lg` (1024px).
+  - Nav links and "GET IN TOUCH" button show at `md`+; hamburger shows below `md`.
+  - Award badge hides on mobile (`hidden sm:flex`).
+  - All text sizes, paddings, gaps, and margins scale up through `sm:` and `lg:` prefixes.
+  - Stats and CTA row use `flex-wrap` to prevent overflow on small screens.
 
-  **Dependencies:** React, lucide-react (ArrowRight, Menu, X), Tailwind CSS, Google Fonts Geist.
+  Make everything fully mobile responsive. Use a single `App.tsx` component with `useState` for the menu toggle. No routing needed.

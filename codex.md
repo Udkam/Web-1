@@ -126,3 +126,34 @@
 - Risks and next steps:
   - The hero depends on a remote CloudFront video; if that URL becomes unavailable, the page falls back visually to black.
   - Local Vite server was used for verification and must be closed before finishing this task.
+
+## 2026-06-26 ReactBits motion showcase
+
+### Phase 1 - Source ReactBits and implement 13 effects
+
+- Actions taken:
+  - Opened the ReactBits documentation context for introduction, installation, and MCP registry guidance.
+  - Shallow-cloned the official `DavidHDev/react-bits` repository into a temporary system directory for source inspection only.
+  - Confirmed ReactBits supports shadcn/jsrepo source installs, with component variants such as TS/JS plus CSS/Tailwind.
+  - Rebuilt the app as a VANGUARD ReactBits motion showcase using the current VANGUARD visual prompt and the user-provided ReactBits references.
+  - Implemented 13 ReactBits-style effects in the app: `GradientText`, `ShinyText`, `GlitchText`, `DecryptedText`, `TextType`, `RotatingText`, `CountUp`, `CircularText`, `CurvedLoop`, `StarBorder`, `ElectricBorder`, `SpotlightCard`, and `Waves`.
+  - Kept the implementation dependency-light by using React, CSS, canvas/SVG, and existing `lucide-react` instead of importing the full ReactBits dependency stack.
+  - Updated `index.html` with VANGUARD/ReactBits metadata, Inter, and the Podium font link; extended Tailwind font families for `inter` and `podium`; replaced the favicon with a VANGUARD mark.
+- Verification:
+  - `npm run build` passed.
+  - Desktop Playwright check at `1440x1000`: title `VANGUARD ReactBits Lab`, 13 `[data-reactbits-effect]` entries, no horizontal overflow, no visible targets below `44px`, hero height `920`, next section visible at `920`, and video playing with `readyState: 4`, `videoWidth: 3852`, `videoHeight: 2152`, `paused: false`.
+  - Mobile Playwright check at `390x844`: 13 effects, no horizontal overflow, hero height `776.475`, next section starts at `776.475`, `Motion lab` heading visible within the first viewport, mobile menu opens with `aria-expanded="true"`, shows 4 links, and closes after selecting `Lab`.
+  - Final CSS guardrail check found no Tailwind tracking classes, no negative letter-spacing, and no viewport-scaled font-size rules.
+  - Screenshots saved under ignored `verification/`: `reactbits-desktop-1440x1000.png`, `reactbits-mobile-390x844.png`, and `reactbits-mobile-top-390x844.png`.
+- Changed files:
+  - `DESIGN.md`
+  - `index.html`
+  - `tailwind.config.cjs`
+  - `public/favicon.svg`
+  - `src/App.tsx`
+  - `src/styles.css`
+  - `codex.md`
+- Risks and next steps:
+  - The hero still depends on the remote CloudFront video from the prompt; if that URL changes or fails, the first viewport falls back to the dark animated wave layer.
+  - ReactBits was inspected from a temporary clone rather than installed through shadcn/jsrepo, because the showcase only needed a curated dependency-light implementation of the selected effects.
+  - Local Vite server was used for verification and must be closed before finishing this task.

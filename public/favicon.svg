@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Foldcraft">
-  <rect width="64" height="64" rx="14" fill="#050505"/>
-  <path d="M18 17h31v8H27v9h18v8H27v15h-9V17Z" fill="#fff"/>
-  <path d="M49 17 18 57" stroke="#fff" stroke-opacity=".38" stroke-width="3"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="VANGUARD">
+  <rect width="64" height="64" rx="10" fill="#070809"/>
+  <path d="M10 12h12l10 28 10-28h12L38 52H26L10 12Z" fill="#f7ff5a"/>
+  <path d="M23 12h8l4 12-4 12-4-12-4-12Z" fill="#50d5ff"/>
 </svg>
