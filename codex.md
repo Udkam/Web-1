@@ -182,3 +182,22 @@
 - Risks and next steps:
   - The signature depends on Google Fonts loading `Mr Dafoe`; if the network font fails, the mask still runs but the fallback cursive glyph shape may differ.
   - Local Vite verification used port `5174` because `5173` was already occupied, and the local listener must be closed before finishing this task.
+
+### Phase 2 - Correct reference stroke order
+
+- Actions taken:
+  - Reworked the signature from font-glyph masks into custom filled SVG paths after the reference image showed the required broad fill shapes and explicit start/end points.
+  - Kept the visible `4c` fill-only with `stroke: none`; the stroke-like paths are only white mask reveal paths.
+  - Preserved the accepted first stroke and corrected stroke 2 to start on the upper-right `4` stem and draw down toward the lower-left endpoint.
+  - Corrected the `c` reveal path to start from the upper/right starting point and sweep counterclockwise across the top arc, left side, bottom, and final right tail.
+- Verification:
+  - `npm run build` passed after the path correction.
+  - System-browser Playwright verification confirmed no horizontal overflow, all reveal path offsets finish at `0px`, and all visible shapes still render with `stroke: none`.
+  - Timing screenshots saved under ignored `verification/`: `four-c-corrected-second-clean.png`, `four-c-corrected-c-start.png`, `four-c-corrected-c-mid.png`, `four-c-corrected-final-desktop.png`, and `four-c-corrected-final-mobile.png`.
+- Changed files:
+  - `src/App.tsx`
+  - `src/styles.css`
+  - `codex.md`
+- Risks and next steps:
+  - The custom filled path now prioritizes the provided reference stroke geometry over exact font-glyph fidelity; `Mr Dafoe` remains loaded from the prior phase, but the visible corrected shape is vector-drawn for animation control.
+  - Local Vite verification is still running on port `5174` during this phase and must be closed before finishing.

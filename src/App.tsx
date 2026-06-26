@@ -464,56 +464,64 @@ function Waves({
 function FourCSignature() {
   return (
     <div className="four-c-signature" aria-label="4c writing animation">
-      <svg viewBox="0 0 370 210" role="img">
+      <svg viewBox="0 0 980 560" role="img">
         <title>4c</title>
         <defs>
-          <mask id="four-hook-mask" maskUnits="userSpaceOnUse">
+          <mask id="four-first-stroke-mask" maskUnits="userSpaceOnUse">
             <path
-              className="four-c-reveal four-c-reveal--hook"
-              d="M 150 34 C 108 31 61 55 50 93 C 39 132 86 149 127 131 C 153 120 169 100 174 76"
+              className="four-c-reveal four-c-reveal--first"
+              d="M 522 42 C 382 108 204 260 96 410 C 66 452 64 486 91 503 C 133 530 226 481 326 478 C 421 476 508 493 566 525"
               fill="none"
               pathLength="1"
               stroke="#fff"
               strokeLinecap="round"
               strokeLinejoin="round"
-              strokeWidth="72"
+              strokeWidth="178"
             />
           </mask>
-          <mask id="four-stem-mask" maskUnits="userSpaceOnUse">
+          <mask id="four-second-stroke-mask" maskUnits="userSpaceOnUse">
             <path
-              className="four-c-reveal four-c-reveal--stem"
-              d="M 168 62 C 170 94 170 127 162 172"
-              fill="none"
-              pathLength="1"
-              stroke="#fff"
-              strokeLinecap="round"
-              strokeWidth="52"
-            />
-          </mask>
-          <mask id="c-spiral-mask" maskUnits="userSpaceOnUse">
-            <path
-              className="four-c-reveal four-c-reveal--c"
-              d="M 269 50 C 228 45 198 71 194 106 C 189 153 238 176 282 154 C 319 135 322 92 291 80 C 265 70 239 83 236 107 C 234 124 249 134 266 126"
+              className="four-c-reveal four-c-reveal--second"
+              d="M 502 188 C 438 273 344 408 236 538"
               fill="none"
               pathLength="1"
               stroke="#fff"
               strokeLinecap="round"
               strokeLinejoin="round"
-              strokeWidth="76"
+              strokeWidth="132"
+            />
+          </mask>
+          <mask id="c-stroke-mask" maskUnits="userSpaceOnUse">
+            <path
+              className="four-c-reveal four-c-reveal--third"
+              d="M 796 262 C 721 226 600 250 526 321 C 455 389 477 459 563 466 C 665 474 799 402 923 305"
+              fill="none"
+              pathLength="1"
+              stroke="#fff"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="154"
             />
           </mask>
         </defs>
 
-        <g className="four-c-fill">
-          <text mask="url(#four-hook-mask)" x="32" y="159">
-            4
-          </text>
-          <text mask="url(#four-stem-mask)" x="32" y="159">
-            4
-          </text>
-          <text mask="url(#c-spiral-mask)" x="180" y="159">
-            c
-          </text>
+        <g className="four-c-shapes">
+          <path
+            className="four-c-shape four-c-shape--four"
+            d="M 506 21 C 376 82 196 244 91 391 C 59 435 54 480 82 509 C 116 544 187 511 273 496 C 373 478 480 486 542 520 C 566 533 586 500 567 480 C 526 436 428 418 319 420 C 245 421 181 438 132 460 C 176 346 349 166 526 67 C 552 52 536 7 506 21 Z"
+            mask="url(#four-first-stroke-mask)"
+          />
+          <path
+            className="four-c-shape four-c-shape--four"
+            d="M 485 161 C 402 259 313 391 230 515 C 207 549 247 581 274 546 C 357 440 445 310 526 204 C 546 178 510 132 485 161 Z"
+            mask="url(#four-second-stroke-mask)"
+          />
+          <path
+            className="four-c-shape four-c-shape--c"
+            d="M 761 220 C 685 198 562 237 502 320 C 444 402 489 482 589 480 C 685 478 795 414 924 312 C 951 291 930 251 901 269 C 795 339 708 396 626 422 C 563 442 523 421 540 374 C 562 315 644 269 725 261 C 776 256 801 273 799 296 C 797 324 748 354 683 366 C 650 371 628 368 611 362 C 632 388 681 394 735 376 C 808 352 848 301 825 260 C 813 239 793 227 761 220 Z M 753 278 C 720 275 660 289 637 318 C 659 323 700 318 734 305 C 761 294 774 282 753 278 Z"
+            fillRule="evenodd"
+            mask="url(#c-stroke-mask)"
+          />
         </g>
       </svg>
     </div>
