@@ -1,658 +1,95 @@
-import {
-  useCallback,
-  useEffect,
-  useId,
-  useMemo,
-  useRef,
-  useState,
-  type CSSProperties,
-  type ReactNode,
-} from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, Award, Crown, Menu, X } from "lucide-react";
 
-const navLinks = ["Lab", "Text", "Backgrounds", "Contact"];
+const navLinks = [
+  { label: "Projects", href: "#projects" },
+  { label: "Studio", href: "#studio" },
+  { label: "Offerings", href: "#offerings" },
+  { label: "Inquire", href: "#inquire" },
+];
 
 const videoUrl =
   "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260606_154941_df1a96e1-a06f-450c-bd02-d863414cc1a0.mp4";
 
-const decryptCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#@$%&";
-
-function GradientText({
-  children,
-  colors = ["#f7ff5a", "#50d5ff", "#ff6b4a", "#f8f5ed"],
-  className = "",
-}: {
-  children: ReactNode;
-  colors?: string[];
-  className?: string;
-}) {
-  return (
-    <span
-      className={`rb-gradient-text ${className}`}
-      style={{ "--gradient-colors": colors.join(", ") } as CSSProperties}
-    >
-      {children}
-    </span>
-  );
-}
-
-function ShinyText({
-  text,
-  className = "",
-}: {
-  text: string;
-  className?: string;
-}) {
-  return <span className={`rb-shiny-text ${className}`}>{text}</span>;
-}
-
-function GlitchText({
-  children,
-  className = "",
-  enableOnHover = false,
-}: {
-  children: string;
-  className?: string;
-  enableOnHover?: boolean;
-}) {
-  return (
-    <span
-      className={`rb-glitch-text ${enableOnHover ? "is-hover" : ""} ${className}`}
-      data-text={children}
-    >
-      {children}
-    </span>
-  );
-}
-
-function TextType({
-  phrases,
-  className = "",
-}: {
-  phrases: string[];
-  className?: string;
-}) {
-  const [phraseIndex, setPhraseIndex] = useState(0);
-  const [characterIndex, setCharacterIndex] = useState(0);
-  const [isDeleting, setIsDeleting] = useState(false);
-  const phrase = phrases[phraseIndex % phrases.length];
+function usePrefersReducedMotion() {
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   useEffect(() => {
-    const atEnd = characterIndex === phrase.length;
-    const atStart = characterIndex === 0;
-    const delay = atEnd && !isDeleting ? 1200 : isDeleting ? 28 : 46;
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const updatePreference = () => setPrefersReducedMotion(mediaQuery.matches);
 
-    const timeout = window.setTimeout(() => {
-      if (atEnd && !isDeleting) {
-        setIsDeleting(true);
-        return;
-      }
-
-      if (atStart && isDeleting) {
-        setIsDeleting(false);
-        setPhraseIndex((index) => (index + 1) % phrases.length);
-        return;
-      }
-
-      setCharacterIndex((index) => index + (isDeleting ? -1 : 1));
-    }, delay);
-
-    return () => window.clearTimeout(timeout);
-  }, [characterIndex, isDeleting, phrase.length, phrases.length]);
-
-  return (
-    <span className={`rb-text-type ${className}`}>
-      <span>{phrase.slice(0, characterIndex)}</span>
-      <span className="rb-text-cursor" aria-hidden="true">
-        |
-      </span>
-    </span>
-  );
-}
-
-function DecryptedText({
-  text,
-  className = "",
-}: {
-  text: string;
-  className?: string;
-}) {
-  const [displayText, setDisplayText] = useState(text);
-  const intervalRef = useRef<number | null>(null);
-
-  const randomCharacter = useCallback(() => {
-    return decryptCharacters[Math.floor(Math.random() * decryptCharacters.length)];
+    updatePreference();
+    mediaQuery.addEventListener("change", updatePreference);
+    return () => mediaQuery.removeEventListener("change", updatePreference);
   }, []);
 
-  const run = useCallback(() => {
-    if (intervalRef.current) {
-      window.clearInterval(intervalRef.current);
-    }
-
-    let iteration = 0;
-    intervalRef.current = window.setInterval(() => {
-      setDisplayText(
-        text
-          .split("")
-          .map((character, index) => {
-            if (character === " ") return " ";
-            return index < iteration ? character : randomCharacter();
-          })
-          .join(""),
-      );
-
-      iteration += 0.45;
-
-      if (iteration >= text.length) {
-        setDisplayText(text);
-        if (intervalRef.current) {
-          window.clearInterval(intervalRef.current);
-          intervalRef.current = null;
-        }
-      }
-    }, 34);
-  }, [randomCharacter, text]);
-
-  useEffect(() => {
-    const timeout = window.setTimeout(run, 500);
-    return () => {
-      window.clearTimeout(timeout);
-      if (intervalRef.current) window.clearInterval(intervalRef.current);
-    };
-  }, [run]);
-
-  return (
-    <span
-      aria-label={text}
-      className={`rb-decrypted-text ${className}`}
-      onMouseEnter={run}
-    >
-      {displayText}
-    </span>
-  );
+  return prefersReducedMotion;
 }
-
-function RotatingText({
-  texts,
-  className = "",
-}: {
-  texts: string[];
-  className?: string;
-}) {
-  const [index, setIndex] = useState(0);
-
-  useEffect(() => {
-    const interval = window.setInterval(() => {
-      setIndex((current) => (current + 1) % texts.length);
-    }, 1800);
-
-    return () => window.clearInterval(interval);
-  }, [texts.length]);
-
-  return (
-    <span className={`rb-rotating-text ${className}`}>
-      <span key={texts[index]}>{texts[index]}</span>
-    </span>
-  );
-}
-
-function CountUp({
-  to,
-  suffix = "",
-  className = "",
-}: {
-  to: number;
-  suffix?: string;
-  className?: string;
-}) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const [value, setValue] = useState(0);
-  const [started, setStarted] = useState(false);
-
-  useEffect(() => {
-    if (!ref.current) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setStarted(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.35 },
-    );
-
-    observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    if (!started) return;
-
-    let frame = 0;
-    const start = performance.now();
-    const duration = 1500;
-
-    const tick = (time: number) => {
-      const progress = Math.min((time - start) / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setValue(Math.round(to * eased));
-      if (progress < 1) frame = requestAnimationFrame(tick);
-    };
-
-    frame = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frame);
-  }, [started, to]);
-
-  return (
-    <span className={className} ref={ref}>
-      {value.toLocaleString()}
-      {suffix}
-    </span>
-  );
-}
-
-function CircularText({
-  text,
-  className = "",
-}: {
-  text: string;
-  className?: string;
-}) {
-  const letters = Array.from(text);
-
-  return (
-    <div className={`rb-circular-text ${className}`} aria-label={text}>
-      {letters.map((letter, index) => {
-        const transform = `rotate(${(360 / letters.length) * index}deg) translateY(-4.7rem)`;
-        return (
-          <span aria-hidden="true" key={`${letter}-${index}`} style={{ transform }}>
-            {letter}
-          </span>
-        );
-      })}
-    </div>
-  );
-}
-
-function CurvedLoop({
-  text,
-  className = "",
-}: {
-  text: string;
-  className?: string;
-}) {
-  const id = `curve-${useId().replace(/:/g, "")}`;
-  const repeatedText = `${text}   ${text}   ${text}   `;
-
-  return (
-    <div className={`rb-curved-loop ${className}`}>
-      <svg viewBox="0 0 1440 180" role="img" aria-label={text}>
-        <defs>
-          <path id={id} d="M -120 90 Q 360 10 720 90 T 1560 90" />
-        </defs>
-        <text>
-          <textPath href={`#${id}`} startOffset="0%">
-            <animate attributeName="startOffset" from="0%" to="-100%" dur="18s" repeatCount="indefinite" />
-            {repeatedText}
-          </textPath>
-        </text>
-      </svg>
-    </div>
-  );
-}
-
-function StarBorder({
-  children,
-  className = "",
-  color = "#f7ff5a",
-}: {
-  children: ReactNode;
-  className?: string;
-  color?: string;
-}) {
-  return (
-    <button
-      className={`rb-star-border ${className}`}
-      style={{ "--star-color": color } as CSSProperties}
-      type="button"
-    >
-      <span>{children}</span>
-    </button>
-  );
-}
-
-function ElectricBorder({
-  children,
-  className = "",
-  color = "#50d5ff",
-}: {
-  children: ReactNode;
-  className?: string;
-  color?: string;
-}) {
-  return (
-    <div
-      className={`rb-electric-border ${className}`}
-      style={{ "--electric-color": color } as CSSProperties}
-    >
-      <div className="rb-electric-border__content">{children}</div>
-    </div>
-  );
-}
-
-function SpotlightCard({
-  children,
-  className = "",
-  spotlightColor = "rgba(80, 213, 255, 0.24)",
-}: {
-  children: ReactNode;
-  className?: string;
-  spotlightColor?: string;
-}) {
-  const ref = useRef<HTMLDivElement>(null);
-
-  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
-    const node = ref.current;
-    if (!node) return;
-
-    const rect = node.getBoundingClientRect();
-    node.style.setProperty("--mouse-x", `${event.clientX - rect.left}px`);
-    node.style.setProperty("--mouse-y", `${event.clientY - rect.top}px`);
-    node.style.setProperty("--spotlight-color", spotlightColor);
-  };
-
-  return (
-    <div className={`rb-spotlight-card ${className}`} onMouseMove={handleMouseMove} ref={ref}>
-      {children}
-    </div>
-  );
-}
-
-function Waves({
-  className = "",
-  lineColor = "rgba(248, 245, 237, 0.2)",
-}: {
-  className?: string;
-  lineColor?: string;
-}) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const pointerRef = useRef({ x: -9999, y: -9999 });
-
-  useEffect(() => {
-    const container = containerRef.current;
-    const canvas = canvasRef.current;
-    if (!container || !canvas) return;
-
-    const context = canvas.getContext("2d");
-    if (!context) return;
-
-    let frame = 0;
-    let width = 0;
-    let height = 0;
-    let dpr = 1;
-
-    const resize = () => {
-      const rect = container.getBoundingClientRect();
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
-      width = rect.width;
-      height = rect.height;
-      canvas.width = Math.max(1, Math.floor(width * dpr));
-      canvas.height = Math.max(1, Math.floor(height * dpr));
-      canvas.style.width = `${width}px`;
-      canvas.style.height = `${height}px`;
-      context.setTransform(dpr, 0, 0, dpr, 0, 0);
-    };
-
-    const handlePointerMove = (event: PointerEvent) => {
-      const rect = container.getBoundingClientRect();
-      pointerRef.current = {
-        x: event.clientX - rect.left,
-        y: event.clientY - rect.top,
-      };
-    };
-
-    const draw = (time: number) => {
-      context.clearRect(0, 0, width, height);
-      context.lineWidth = 1;
-      context.strokeStyle = lineColor;
-
-      const pointer = pointerRef.current;
-      const timeScale = time * 0.001;
-
-      for (let y = -28; y < height + 28; y += 24) {
-        context.beginPath();
-        for (let x = -24; x < width + 24; x += 12) {
-          const distance = Math.hypot(pointer.x - x, pointer.y - y);
-          const influence = Math.max(0, 1 - distance / 260);
-          const wave = Math.sin(x * 0.018 + timeScale * 1.8 + y * 0.012) * 10;
-          const pull = influence * Math.sin(distance * 0.035 - timeScale * 6) * 24;
-          const nextY = y + wave + pull;
-
-          if (x === -24) {
-            context.moveTo(x, nextY);
-          } else {
-            context.lineTo(x, nextY);
-          }
-        }
-        context.stroke();
-      }
-
-      frame = requestAnimationFrame(draw);
-    };
-
-    resize();
-    frame = requestAnimationFrame(draw);
-    window.addEventListener("resize", resize);
-    window.addEventListener("pointermove", handlePointerMove, { passive: true });
-
-    return () => {
-      cancelAnimationFrame(frame);
-      window.removeEventListener("resize", resize);
-      window.removeEventListener("pointermove", handlePointerMove);
-    };
-  }, [lineColor]);
-
-  return (
-    <div className={`rb-waves ${className}`} ref={containerRef}>
-      <canvas ref={canvasRef} />
-    </div>
-  );
-}
-
-function FourCSignature() {
-  return (
-    <div className="four-c-signature" aria-label="4c writing animation">
-      <svg viewBox="0 0 980 700" role="img">
-        <title>4c</title>
-        <defs>
-          <mask id="four-first-stroke-mask" maskUnits="userSpaceOnUse">
-            <path
-              className="four-c-reveal four-c-reveal--first"
-              d="M 522 42 C 382 108 204 260 96 410 C 66 452 64 486 91 503 C 133 530 226 481 326 478 C 421 476 508 493 566 525"
-              fill="none"
-              pathLength="1"
-              stroke="#fff"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="178"
-            />
-          </mask>
-          <mask id="four-second-stroke-mask" maskUnits="userSpaceOnUse">
-            <path
-              className="four-c-reveal four-c-reveal--second"
-              d="M 536 66 C 481 185 401 334 303 477 C 249 557 203 642 168 724"
-              fill="none"
-              pathLength="1"
-              stroke="#fff"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="218"
-            />
-          </mask>
-          <mask id="c-stroke-mask" maskUnits="userSpaceOnUse">
-            <path
-              className="four-c-reveal four-c-reveal--third"
-              d="M 820 230 C 720 190 554 218 461 310 C 382 388 420 476 544 473 C 659 470 765 389 921 271"
-              fill="none"
-              pathLength="1"
-              stroke="#fff"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="190"
-            />
-          </mask>
-        </defs>
-
-        <g className="four-c-glyphs">
-          <text className="four-c-glyph four-c-glyph--four" x="18" y="504" mask="url(#four-first-stroke-mask)">
-            4
-          </text>
-          <text className="four-c-glyph four-c-glyph--four" x="18" y="504" mask="url(#four-second-stroke-mask)">
-            4
-          </text>
-          <path
-            className="four-c-stem-extension"
-            d="M 395 383 C 350 455 306 548 256 646 C 242 674 203 667 213 635 C 253 512 314 429 350 385 C 364 367 386 368 395 383 Z"
-            mask="url(#four-second-stroke-mask)"
-          />
-          <text className="four-c-glyph four-c-glyph--c" x="386" y="514" mask="url(#c-stroke-mask)">
-            c
-          </text>
-        </g>
-      </svg>
-    </div>
-  );
-}
-
-const showcaseEffects = [
-  {
-    name: "GradientText",
-    category: "Text",
-    accent: "#f7ff5a",
-    demo: <GradientText>Chromatic identities</GradientText>,
-  },
-  {
-    name: "ShinyText",
-    category: "Text",
-    accent: "#f8f5ed",
-    demo: <ShinyText text="Light sweeps through the mark" />,
-  },
-  {
-    name: "GlitchText",
-    category: "Text",
-    accent: "#ff6b4a",
-    demo: <GlitchText enableOnHover>DISRUPT</GlitchText>,
-  },
-  {
-    name: "DecryptedText",
-    category: "Text",
-    accent: "#50d5ff",
-    demo: <DecryptedText text="SIGNAL ACQUIRED" />,
-  },
-  {
-    name: "TextType",
-    category: "Text",
-    accent: "#95f0c8",
-    demo: <TextType phrases={["Brand engines", "Motion systems", "Launch pages"]} />,
-  },
-  {
-    name: "RotatingText",
-    category: "Text",
-    accent: "#ffb85a",
-    demo: <RotatingText texts={["Design", "Disrupt", "Conquer"]} />,
-  },
-  {
-    name: "CountUp",
-    category: "Data",
-    accent: "#f7ff5a",
-    demo: (
-      <span className="count-demo">
-        <CountUp to={250} suffix="+" />
-      </span>
-    ),
-  },
-  {
-    name: "CircularText",
-    category: "Text",
-    accent: "#50d5ff",
-    demo: <CircularText text="VANGUARD MOTION " />,
-  },
-  {
-    name: "CurvedLoop",
-    category: "Text",
-    accent: "#ff6b4a",
-    demo: <CurvedLoop text="CREATIVE SYSTEMS IN MOTION" />,
-  },
-  {
-    name: "StarBorder",
-    category: "Animation",
-    accent: "#f7ff5a",
-    demo: <StarBorder>Launch Signal</StarBorder>,
-  },
-  {
-    name: "ElectricBorder",
-    category: "Animation",
-    accent: "#50d5ff",
-    demo: (
-      <ElectricBorder>
-        <span>Electric frame</span>
-      </ElectricBorder>
-    ),
-  },
-  {
-    name: "SpotlightCard",
-    category: "Component",
-    accent: "#95f0c8",
-    demo: (
-      <SpotlightCard>
-        <span>Focused surface</span>
-      </SpotlightCard>
-    ),
-  },
-  {
-    name: "Waves",
-    category: "Background",
-    accent: "#ffb85a",
-    demo: (
-      <div className="waves-demo">
-        <Waves lineColor="rgba(255, 184, 90, 0.42)" />
-      </div>
-    ),
-  },
-];
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [videoReady, setVideoReady] = useState(false);
+  const [videoFailed, setVideoFailed] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
+  const prefersReducedMotion = usePrefersReducedMotion();
+  const showVideo = !prefersReducedMotion && !videoFailed;
 
   useEffect(() => {
-    void videoRef.current?.play().catch(() => undefined);
-  }, []);
+    const menu = mobileMenuRef.current as (HTMLDivElement & { inert?: boolean }) | null;
+    if (menu) menu.inert = !menuOpen;
+  }, [menuOpen]);
+
+  useEffect(() => {
+    if (!menuOpen) return undefined;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMenuOpen(false);
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [menuOpen]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (prefersReducedMotion || videoFailed) {
+      video.pause();
+      return;
+    }
+
+    void video.play().catch(() => setVideoFailed(true));
+  }, [prefersReducedMotion, videoFailed]);
 
   const closeMenu = () => setMenuOpen(false);
+  const mobileTabIndex = menuOpen ? undefined : -1;
 
   return (
     <div className="site-shell">
       <section className="hero-section" id="top">
-        <video
-          aria-hidden="true"
-          autoPlay
-          className="hero-video"
-          loop
-          muted
-          onLoadedData={(event) => {
-            void event.currentTarget.play().catch(() => undefined);
-          }}
-          playsInline
-          preload="auto"
-          ref={videoRef}
-          src={videoUrl}
-        />
+        {showVideo ? (
+          <video
+            aria-hidden="true"
+            autoPlay
+            className={`hero-video ${videoReady ? "is-ready" : ""}`}
+            loop
+            muted
+            onCanPlay={() => setVideoReady(true)}
+            onError={() => setVideoFailed(true)}
+            onLoadedData={(event) => {
+              void event.currentTarget.play().catch(() => setVideoFailed(true));
+            }}
+            playsInline
+            preload="auto"
+            ref={videoRef}
+            src={videoUrl}
+          />
+        ) : null}
+        <div className={`hero-fallback ${!showVideo || !videoReady ? "is-visible" : ""}`} aria-hidden="true" />
         <div className="hero-scrim" aria-hidden="true" />
-        <Waves className="hero-waves" />
-        <FourCSignature />
+        <div className="hero-lines" aria-hidden="true" />
 
         <header className="site-header">
           <a className="brand-mark font-podium" href="#top" onClick={closeMenu}>
@@ -661,18 +98,19 @@ function App() {
 
           <nav aria-label="Primary navigation" className="desktop-nav">
             {navLinks.map((link) => (
-              <a href={`#${link.toLowerCase()}`} key={link}>
-                {link}
+              <a href={link.href} key={link.label}>
+                {link.label}
               </a>
             ))}
           </nav>
 
-          <a className="desktop-cta" href="#contact">
+          <a className="desktop-cta" href="#inquire">
             Get in touch
             <ArrowUpRight aria-hidden="true" size={16} />
           </a>
 
           <button
+            aria-controls="mobile-menu"
             aria-expanded={menuOpen}
             aria-label="Toggle navigation menu"
             className="menu-toggle"
@@ -683,26 +121,32 @@ function App() {
           </button>
         </header>
 
-        <div className={`mobile-menu ${menuOpen ? "is-open" : ""}`}>
+        <div
+          aria-hidden={!menuOpen}
+          className={`mobile-menu ${menuOpen ? "is-open" : ""}`}
+          id="mobile-menu"
+          ref={mobileMenuRef}
+        >
           <div className="mobile-menu__bar">
             <span className="font-podium">VANGUARD</span>
-            <button aria-label="Close navigation menu" onClick={closeMenu} type="button">
+            <button aria-label="Close navigation menu" onClick={closeMenu} tabIndex={mobileTabIndex} type="button">
               <X aria-hidden="true" size={24} />
             </button>
           </div>
           <nav aria-label="Mobile navigation">
             {navLinks.map((link, index) => (
               <a
-                href={`#${link.toLowerCase()}`}
-                key={link}
+                href={link.href}
+                key={link.label}
                 onClick={closeMenu}
-                style={{ transitionDelay: `${index * 80 + 100}ms` }}
+                style={{ transitionDelay: menuOpen ? `${index * 80 + 100}ms` : "0ms" }}
+                tabIndex={mobileTabIndex}
               >
-                {link}
+                {link.label}
               </a>
             ))}
           </nav>
-          <a className="mobile-menu__cta" href="#contact" onClick={closeMenu}>
+          <a className="mobile-menu__cta" href="#inquire" onClick={closeMenu} tabIndex={mobileTabIndex}>
             Get in touch
           </a>
         </div>
@@ -710,111 +154,61 @@ function App() {
         <main className="hero-content">
           <div className="hero-kicker">
             <Crown aria-hidden="true" size={16} />
-            <ShinyText text="ReactBits motion collection" />
+            <span>World-Class Digital Collective</span>
           </div>
 
-          <h1 className="hero-title font-podium">
-            <GlitchText>VANGUARD</GlitchText>
-            <span>
-              builds brand systems with <GradientText>living motion</GradientText>
-            </span>
-          </h1>
+          <div className="hero-title-stack">
+            <h1 className="hero-title font-podium">VANGUARD</h1>
+            <div className="glitch-word font-podium" aria-hidden="true">
+              <span>VANGUARD</span>
+              <span>VANGUARD</span>
+            </div>
+          </div>
 
-          <p className="hero-copy">
-            <TextType
-              phrases={[
-                "Text effects, kinetic borders, responsive backgrounds.",
-                "A launch page assembled from 13 ReactBits-style primitives.",
-                "Built for visual testing across desktop and mobile.",
-              ]}
-            />
+          <p className="hero-mantra font-podium" aria-label="Design. Disrupt. Conquer.">
+            <span>Design.</span>
+            <span>Disrupt.</span>
+            <span>Conquer.</span>
           </p>
 
-          <div className="hero-actions">
-            <StarBorder>
-              Explore effects
+          <p className="hero-copy" id="studio">
+            We build fierce brand identities that do not just turn heads -
+            <strong> they lead.</strong>
+          </p>
+
+          <div className="hero-actions" id="inquire">
+            <a className="primary-cta" href="#projects">
+              See our work
               <ArrowUpRight aria-hidden="true" size={16} />
-            </StarBorder>
-            <div className="award-note">
+            </a>
+            <a className="secondary-cta" href="#offerings">
+              Start an inquiry
+            </a>
+            <div className="award-note" aria-label="Top-rated brand studio">
               <Award aria-hidden="true" size={34} />
               <span>
-                Curated
+                Top-Rated
                 <br />
-                Motion Stack
+                Brand Studio
               </span>
             </div>
           </div>
 
-          <div className="hero-stats" aria-label="Vanguard studio statistics">
+          <div className="hero-stats" id="projects" aria-label="VANGUARD studio statistics">
             <div>
-              <CountUp to={13} suffix="+" />
-              <span>ReactBits effects</span>
+              <strong>250+</strong>
+              <span>Brands Transformed</span>
             </div>
             <div>
-              <CountUp to={4} />
-              <span>Effect families</span>
+              <strong>95%</strong>
+              <span>Client Retention</span>
             </div>
-            <div>
-              <CountUp to={100} suffix="%" />
-              <span>Responsive pass</span>
+            <div id="offerings">
+              <strong>10+</strong>
+              <span>Years in the Game</span>
             </div>
           </div>
         </main>
-      </section>
-
-      <section className="showcase-section" id="lab">
-        <div className="section-heading">
-          <p>Motion lab</p>
-          <h2>Thirteen selected ReactBits effects arranged as one website.</h2>
-        </div>
-
-        <div className="effects-grid" id="text">
-          {showcaseEffects.map((effect) => (
-            <article
-              className="effect-card"
-              data-reactbits-effect={effect.name}
-              key={effect.name}
-              style={{ "--accent": effect.accent } as CSSProperties}
-            >
-              <div className="effect-card__meta">
-                <span>{effect.category}</span>
-                <strong>{effect.name}</strong>
-              </div>
-              <div className="effect-card__stage">{effect.demo}</div>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="background-section" id="backgrounds">
-        <Waves className="background-section__waves" lineColor="rgba(80, 213, 255, 0.2)" />
-        <CurvedLoop text="VANGUARD REACTBITS MOTION INDEX" />
-        <div className="background-section__content">
-          <ElectricBorder color="#ff6b4a">
-            <div>
-              <span>ElectricBorder</span>
-              <strong>signal frame</strong>
-            </div>
-          </ElectricBorder>
-          <SpotlightCard>
-            <span>SpotlightCard</span>
-            <strong>cursor-lit surface</strong>
-          </SpotlightCard>
-          <CircularText text="TEXT BACKGROUND MOTION " />
-        </div>
-      </section>
-
-      <section className="contact-section" id="contact">
-        <div>
-          <p>VANGUARD</p>
-          <h2>
-            Ship motion systems that feel deliberate, not decorative.
-          </h2>
-        </div>
-        <a href="mailto:hello@vanguard.example">
-          hello@vanguard.example
-          <ArrowUpRight aria-hidden="true" size={18} />
-        </a>
       </section>
     </div>
   );
