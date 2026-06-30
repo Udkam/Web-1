@@ -11,6 +11,3 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-
-# Codex local work log
-docs/logs/CHANGELOG.md
