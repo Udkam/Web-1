@@ -1,77 +1,132 @@
-* Build a fullscreen hero landing page for a creative agency called "VANGUARD" using React, Tailwind CSS, and Vite. The page should be a single viewport-height section with a looping background video and all content overlaid on top.
+---
+version: 1.0.0
+name: Pixel Precision
+description: A premium design system focusing on extreme clarity, high-contrast monochrome palettes, and atmospheric depth.
+colors:
+  background: "#080808"
+  foreground: "#FFFFFF"
+  neutral-100: "#F5F5F5"
+  neutral-200: "#E5E5E5"
+  neutral-400: "#A3A3A3"
+  neutral-500: "#737373"
+  neutral-600: "#525252"
+  neutral-800: "#262626"
+  neutral-900: "#171717"
+  accent-silver: "linear-gradient(135deg, #f5f5f5, #737373)"
+typography:
+  display:
+    family: "Inter"
+    weight: "100"
+    letterSpacing: "-0.05em"
+  body:
+    family: "Inter"
+    weight: "200"
+    lineHeight: "1.8"
+  mono:
+    family: "JetBrains Mono"
+    weight: "400"
+    letterSpacing: "0.02em"
+  nav:
+    family: "JetBrains Mono"
+    weight: "400"
+    size: "12px"
+spacing:
+  xs: "8px"
+  sm: "16px"
+  md: "24px"
+  lg: "32px"
+  xl: "48px"
+  section: "128px"
+rounded:
+  none: "0px"
+  sm: "4px"
+  md: "12px"
+  lg: "24px"
+  full: "999px"
+  card: "32px"
+components:
+  nav:
+    position: "fixed"
+    blendMode: "difference"
+    padding: "32px"
+  hero:
+    alignment: "center"
+    max-width: "896px"
+    stack: "z-index 10"
+  button-primary:
+    background: "linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02))"
+    border: "1px solid transparent"
+    padding: "14px 32px"
+  card-work:
+    background: "rgba(23, 23, 23, 0.4)"
+    backdropBlur: "12px"
+    border: "1px solid rgba(38, 38, 38, 0.6)"
+  badge:
+    background: "rgba(23, 23, 23, 0.4)"
+    border: "1px solid rgba(38, 38, 38, 0.6)"
+    rounded: "999px"
+motion:
+  duration-slow: "500ms"
+  duration-entrance: "1200ms"
+  ease: "power4.out"
+---
+## Overview
+The Pixel Precision system is built for high-end digital agency portfolios. It relies on a dark-mode first architecture, utilizing procedural noise and WebGL-driven ambient backgrounds to create a sense of infinite digital space.
 
-  **Background video:**
-  Use this exact CloudFront URL as a fullscreen `<video>` element with `autoPlay`, `muted`, `loop`, and `playsInline` attributes, set to `object-cover` to fill the entire viewport:
-  ```
-  https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260606_154941_df1a96e1-a06f-450c-bd02-d863414cc1a0.mp4
-  ```
+## Colors
+- Core palette is strictly monochrome (Black #080808 to White #FFFFFF).
+- Use Neutral-800 for structural borders.
+- Use Neutral-400 for secondary descriptive text.
+- Accent gradients are reserved for metrics and hero-level emphasize words.
 
-  **Fonts (loaded in index.html):**
-  1. "FSP DEMO - PODIUM Sharp 4.11" from `https://db.onlinewebfonts.com/c/8b75d9dcff6a48c35a46656192adf019?family=FSP+DEMO+-+PODIUM+Sharp+4.11` -- used for the brand name and main heading. Create a `.font-podium` utility class for it and register it in tailwind.config.js as `fontFamily.podium`.
-  2. "Inter" from Google Fonts (weights 400, 500, 600, 700) -- used for body text, nav links, stats, and CTAs. Register it in tailwind.config.js as `fontFamily.inter`.
+## Typography
+- **Inter**: Primary typeface for headlines (Thin/100) and body (ExtraLight/200).
+- **JetBrains Mono**: Functional typeface for labels, navigation, and technical metadata.
+- Headline masks: Use linear gradients (White to Neutral-600) on specific keywords to simulate metallic lighting.
 
-  **Icons:** Use `lucide-react` for all icons: `ArrowUpRight`, `Award`, `Crown`, and `X`.
+## Spacing
+- Standard 8px grid system.
+- Generous vertical padding (128px) between major sections to allow the background WebGL effects to breathe.
 
-  **Navbar:**
-  - Horizontal bar at the top with responsive padding (`px-6 sm:px-10 lg:px-16`, `py-5 lg:py-7`).
-  - Left: brand name "VANGUARD" in `font-podium`, white, bold, uppercase, `text-2xl sm:text-3xl`, `tracking-wider`.
-  - Center (hidden below `md`): four nav links -- "Projects", "Studio", "Offerings", "Inquire" -- in `font-inter`, `text-sm`, `text-white/80`, `tracking-widest`, uppercase, with `hover:text-white` transition.
-  - Right (hidden below `md`): a "GET IN TOUCH" link with an `ArrowUpRight` icon, styled as a bordered button (`border border-white/30 hover:border-white/60`, `px-6 py-3`, `text-xs`, `tracking-widest`, uppercase, `hover:bg-white/10`).
-  - Right (visible below `md`): a hamburger button made of three white `div` bars (`w-6 h-0.5`, `w-6 h-0.5`, `w-4 h-0.5` with `space-y-1.5`).
+## Layout
+- **Z-Index Layers**:
+  - 0: WebGL Canvas
+  - 1: Ambient Vignette Overlay
+  - 10: Main Content
+  - 50: Fixed Navigation
+  - 100: Noise Texture Overlay
+- Max-width containers for content should not exceed 1024px for readability.
 
-  **Mobile Menu Overlay (below `md` only):**
-  - Fixed fullscreen overlay (`fixed inset-0 z-50`) with `bg-black/95 backdrop-blur-sm`.
-  - Toggles visibility via React `useState` -- when open: `opacity-100 visible`, when closed: `opacity-0 invisible`, with `transition-all duration-500`.
-  - Header row matches the navbar: brand name on left, `X` close icon on right.
-  - Centered vertically: each of the 4 nav links rendered in `font-podium`, `text-4xl sm:text-5xl`, white, uppercase, with staggered entrance animations using inline `style` -- each item gets `transitionDelay: i * 80 + 100ms`, `opacity` and `translateY(20px)` transitions based on the open state.
-  - Below the links: a "GET IN TOUCH" bordered button with the same staggered animation pattern.
-  - All links call `setMenuOpen(false)` on click.
+## Elevation & Depth
+- Avoid box-shadows on cards; use border-gradients and backdrop-blurs (12px-20px) to imply depth.
+- Primary buttons utilize a 30px spread shadow at low opacity (30%) to lift off the background.
 
-  **Hero Content (vertically centered, left-aligned):**
-  All hero elements use staggered `animate-fade-up` animations (defined in CSS as `@keyframes fade-up` translating from `translateY(30px), opacity:0` to `translateY(0), opacity:1` over `0.8s ease-out`). Each successive element has an additional `0.2s` delay. Elements start with `opacity: 0` and use `animation-fill-mode: forwards`.
+## Shapes
+- Use `rounded-full` for interactive CTAs and status badges.
+- Use `32px` (2rem) for content containers and portfolio cards to create a modern, soft-tech aesthetic.
 
-  1. **Tagline:** A `Crown` icon (lucide, `w-4 h-4`, `text-white/70`) followed by "World-Class Digital Collective" in `text-white/70`, `text-xs sm:text-sm`, `font-inter`, `tracking-[0.3em]`, uppercase. Uses `animate-fade-up` (no delay). Has `mb-6 lg:mb-8`.
+## Components
+- **Precision Badge**: Pill-shaped indicator with a pulsing status dot (#neutral-300).
+- **Work Cards**: Large radius cards with an inner image container (rounded-3xl) and hover-scale transforms (1.02x).
+- **Metric Stacks**: Vertical alignment with 1px gradient dividers and animated text backgrounds.
 
-  2. **Main Heading:** Three lines in `font-podium`, white, uppercase, `leading-[0.92]`, `tracking-tight`, each using `text-[clamp(2.8rem,8vw,7rem)]`:
-     - "Design."
-     - "Disrupt."
-     - "Conquer."
-     Uses `animate-fade-up-delay-1` (0.2s delay).
+## Motion
+- **Entrance**: Use GSAP to stagger words into view from `translateY(110%)` with a `power4.out` ease.
+- **Parallax**: Background canvas should scale down (1.0 to 0.4) and rotate based on scroll progress via ScrollTrigger.
+- **Micro-interactions**: Links should transition color over 500ms.
 
-  3. **Subtext:** "We build fierce brand identities" (line break) "that don't just turn heads --" then bold white "they lead." in `text-white/70`, `text-sm sm:text-base`, `font-inter`, `leading-relaxed`, `max-w-md`. Uses `animate-fade-up-delay-2` (0.4s delay). `mt-6 lg:mt-8`.
+## Do's and Don'ts
+### Do's
+- Use `mix-blend-difference` for navigation over high-contrast backgrounds.
+- Maintain extreme tracking-tighter on large headlines.
+- Use thin 1px borders to define sections.
 
-  4. **CTA Row:** Uses `animate-fade-up-delay-3` (0.6s delay), `mt-8 lg:mt-10`, `flex flex-wrap items-center gap-4 sm:gap-6`.
-     - Black button "SEE OUR WORK" with `ArrowUpRight` icon. `bg-black hover:bg-neutral-900`, `px-5 sm:px-7 py-3 sm:py-4`, `text-[11px] sm:text-xs`, `tracking-widest`, uppercase. Arrow has `group-hover:translate-x-0.5 group-hover:-translate-y-0.5` transition.
-     - Beside it (hidden on mobile, `hidden sm:flex`): an `Award` icon (`w-8 h-8`, `text-white/50`) with two lines of text: "Top-Rated" / "Brand Studio" in `text-white/60`, `text-xs`, `tracking-wider`, uppercase.
+### Don'ts
+- Do not use vibrant colors; the system is strictly neutral.
+- Do not use heavy font weights (stay below 400).
+- Do not disable the noise overlay, as it prevents banding in gradients.
 
-  5. **Stats Row:** Uses `animate-fade-up-delay-4` (0.8s delay), `mt-8 sm:mt-10 lg:mt-14`, `flex flex-wrap gap-6 sm:gap-12 lg:gap-16`. Three stats:
-     - "250+" / "Brands Transformed"
-     - "95%" / "Client Retention"
-     - "10+" / "Years in the Game"
-     Values in `font-inter`, white, `text-2xl sm:text-4xl lg:text-5xl`, bold, `tracking-tight`. Labels in `text-white/50`, `text-[9px] sm:text-xs`, `tracking-widest`, uppercase, `mt-1`.
-
-  **CSS Animations (defined in index.css under `@layer utilities`):**
-  ```css
-  @keyframes fade-up {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes fade-in {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-  @keyframes scale-in {
-    from { opacity: 0; transform: scale(0.9); }
-    to { opacity: 1; transform: scale(1); }
-  }
-  ```
-  With classes: `.animate-fade-up` (0s delay), `.animate-fade-up-delay-1` through `.animate-fade-up-delay-4` (0.2s increments, starting `opacity: 0`), `.animate-fade-in`, `.animate-fade-in-delay`.
-
-  **Responsive behavior:**
-  - Full layout is mobile-first with breakpoints at `sm` (640px), `md` (768px), and `lg` (1024px).
-  - Nav links and "GET IN TOUCH" button show at `md`+; hamburger shows below `md`.
-  - Award badge hides on mobile (`hidden sm:flex`).
-  - All text sizes, paddings, gaps, and margins scale up through `sm:` and `lg:` prefixes.
-  - Stats and CTA row use `flex-wrap` to prevent overflow on small screens.
-
-  Make everything fully mobile responsive. Use a single `App.tsx` component with `useState` for the menu toggle. No routing needed.
+## Accessibility
+- Maintain text-neutral-400 as the minimum contrast level for small text.
+- Ensure navigation links have a clear `hover:text-neutral-200` state.
+- All interactive elements must have a minimum scale of 0.98 on active click to provide tactile feedback.
