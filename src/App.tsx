@@ -1,17 +1,16 @@
 import { useEffect, useRef } from "react";
 
-const titleWords = ["Pixel", "engineered", "at", "the", "level"];
+const titleWords = ["Designing", "at", "the", "pixel", "level"];
 
 const navLinks = [
-  { label: "Work", href: "#work" },
+  { label: "Portfolio", href: "#work" },
   { label: "Process", href: "#process" },
-  { label: "Contact", href: "#contact" },
 ];
 
 const metrics = [
-  { id: "metric-1", value: "09", label: "launch systems shipped" },
-  { id: "metric-2", value: "04", label: "platforms re-engineered" },
-  { id: "metric-3", value: "18ms", label: "interaction target" },
+  { id: "metric-1", value: "100%", label: "precision" },
+  { id: "metric-2", value: "60fps", label: "performance" },
+  { id: "metric-3", value: "Zero", label: "compromise" },
 ];
 
 const portfolioCards = [
@@ -239,30 +238,78 @@ function App() {
         return length(p) - radius;
       }
 
-      float softLight(float value) {
-        return smoothstep(0.78, 0.0, value);
+      float hash(vec2 p) {
+        return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
+      }
+
+      float noise(vec2 p) {
+        vec2 i = floor(p);
+        vec2 f = fract(p);
+        vec2 u = f * f * (3.0 - 2.0 * f);
+        return mix(
+          mix(hash(i + vec2(0.0, 0.0)), hash(i + vec2(1.0, 0.0)), u.x),
+          mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), u.x),
+          u.y
+        );
+      }
+
+      float fbm(vec2 p) {
+        float v = 0.0;
+        float a = 0.5;
+        for (int i = 0; i < 4; i++) {
+          v += a * noise(p);
+          p = mat2(1.6, 1.2, -1.2, 1.6) * p;
+          a *= 0.5;
+        }
+        return v;
+      }
+
+      float liquidField(vec2 p, float t) {
+        vec2 m = (u_mouse - 0.5) * vec2(0.22, -0.12);
+        p -= vec2(0.86, 0.10) + m;
+        p.x *= 0.9;
+        p.y *= 1.18;
+        float a = atan(p.y, p.x);
+        float r = length(p);
+        float folds = sin(a * 7.0 + t * 1.4 + r * 8.0) * 0.045;
+        folds += sin(a * 13.0 - t * 0.9 + r * 15.0) * 0.025;
+        float n = fbm(p * 2.2 + vec2(t * 0.12, -t * 0.08)) * 0.16;
+        vec2 q = p + normalize(p + 0.0001) * (folds + n);
+
+        float field = 0.0;
+        field += 0.25 / length(q - vec2(-0.06, 0.02));
+        field += 0.18 / length(q - vec2(0.08, 0.22 + sin(t * 0.7) * 0.05));
+        field += 0.20 / length(q - vec2(0.18, -0.13));
+        field += 0.13 / length(q - vec2(-0.18, -0.18 + cos(t * 0.8) * 0.04));
+        field += 0.11 / length(q - vec2(0.32, 0.03));
+        return field;
       }
 
       void main() {
         vec2 uv = (gl_FragCoord.xy * 2.0 - u_resolution.xy) / min(u_resolution.x, u_resolution.y);
-        vec2 mouse = (u_mouse * 2.0 - 1.0) * vec2(0.34, -0.24);
-        uv += mouse;
+        float t = u_time;
 
-        float t = u_time * 0.22;
-        vec3 p = vec3(uv, sin(t) * 0.18);
-        p.x += sin(p.y * 2.4 + t) * 0.12;
-        p.y += cos(p.x * 2.0 - t * 1.3) * 0.08;
+        float centerGlow = exp(-dot(uv - vec2(-0.18, -0.03), uv - vec2(-0.18, -0.03)) * 2.2) * 0.18;
+        float lowerGlow = exp(-dot(uv - vec2(-0.08, -0.72), uv - vec2(-0.08, -0.72)) * 4.2) * 0.09;
 
-        float morph = 1.0 + sin(t + length(uv) * 4.0) * 0.06;
-        float d = sphereSdf(p, 0.82 * morph);
-        float shell = softLight(abs(d));
-        float rim = smoothstep(0.56, 1.18, length(uv));
-        float scan = sin((uv.y + t) * 34.0) * 0.025;
-        float grain = fract(sin(dot(uv + u_time, vec2(12.9898, 78.233))) * 43758.5453) * 0.035;
-        float value = shell * (0.7 + rim * 0.4) + scan + grain;
-        value *= 1.0 - smoothstep(1.0, 1.9, length(uv));
+        float field = liquidField(uv, t);
+        float body = smoothstep(1.65, 2.28, field);
+        float edge = smoothstep(1.28, 1.88, field) - smoothstep(2.2, 2.74, field);
 
-        gl_FragColor = vec4(vec3(value), value * 0.92);
+        float eps = 0.006;
+        vec2 grad = vec2(liquidField(uv + vec2(eps, 0.0), t) - liquidField(uv - vec2(eps, 0.0), t), liquidField(uv + vec2(0.0, eps), t) - liquidField(uv - vec2(0.0, eps), t));
+        vec3 normal = normalize(vec3(grad * 0.9, 0.22));
+        vec3 light = normalize(vec3(-0.5, 0.45, 0.7));
+        float diffuse = clamp(dot(normal, light), 0.0, 1.0);
+        float spec = pow(clamp(dot(reflect(-light, normal), vec3(0.0, 0.0, 1.0)), 0.0, 1.0), 18.0);
+        float veins = smoothstep(0.47, 0.52, fbm(uv * 7.0 + vec2(t * 0.08, t * 0.05))) * body * 0.18;
+
+        float liquid = body * (0.06 + diffuse * 0.3) + edge * 0.16 + spec * 0.42 + veins;
+        float grain = (hash(gl_FragCoord.xy + t) - 0.5) * 0.025;
+        float value = centerGlow + lowerGlow + liquid + grain;
+        float alpha = clamp(centerGlow * 1.2 + lowerGlow + body * 0.9 + edge * 0.45, 0.0, 0.94);
+
+        gl_FragColor = vec4(vec3(value), alpha);
       }
     `;
 
@@ -302,7 +349,7 @@ function App() {
     let start = performance.now();
 
     const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 1.6);
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.2);
       const width = Math.floor(canvas.clientWidth * dpr);
       const height = Math.floor(canvas.clientHeight * dpr);
       if (canvas.width !== width || canvas.height !== height) {
@@ -312,8 +359,8 @@ function App() {
       gl.viewport(0, 0, canvas.width, canvas.height);
     };
 
+    resize();
     const draw = (now: number) => {
-      resize();
       gl.useProgram(program);
       gl.enableVertexAttribArray(position);
       gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0);
@@ -323,8 +370,12 @@ function App() {
       gl.drawArrays(gl.TRIANGLES, 0, 6);
     };
 
+    let lastDraw = 0;
     const tick = (now: number) => {
-      draw(now);
+      if (now - lastDraw > 30) {
+        draw(now);
+        lastDraw = now;
+      }
       if (!reducedMotionRef.current) {
         frame = window.requestAnimationFrame(tick);
       }
@@ -385,12 +436,12 @@ function App() {
         <a href="#top" className="font-inter text-xl font-thin tracking-tighter text-neutral-100">
           DESIGN
         </a>
-        <nav className="flex min-w-0 justify-end gap-3 font-mono text-[9px] font-normal tracking-tight text-neutral-500 sm:gap-8 sm:text-xs" aria-label="Primary">
-          {navLinks.map((link, index) => (
+        <nav className="flex min-w-0 justify-end gap-3 font-mono text-[9px] font-normal uppercase tracking-tight text-neutral-500 sm:gap-8 sm:text-xs" aria-label="Primary">
+          {navLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className={`${index === 2 ? "hidden sm:inline-flex" : "inline-flex"} transition-colors duration-500 hover:text-neutral-200 focus-visible:text-neutral-200`}
+              className="inline-flex transition-colors duration-500 hover:text-neutral-200 focus-visible:text-neutral-200"
             >
               {link.label}
             </a>
@@ -411,17 +462,22 @@ function App() {
             className="hero-title-text flex w-full max-w-5xl flex-wrap justify-center gap-x-[0.25em] font-inter text-[clamp(2.2rem,9vw,8.75rem)] font-thin leading-[0.95] tracking-[-0.05em] text-neutral-100"
           />
 
-          <p className="hero-copy-text gsap-entrance mt-8 w-full max-w-2xl font-inter text-lg font-extralight leading-[1.8] text-neutral-400 md:text-xl">
-            Designer Studio engineers atmospheric web systems with shader depth, exact typography, and restrained interaction.
+          <p className="hero-copy-text gsap-entrance mt-8 w-full max-w-lg font-inter text-sm font-extralight leading-[1.8] text-neutral-400 md:text-base">
+            Award-winning web design and frontend engineering. Creating meticulously crafted, performant interfaces that redefine digital presence.
           </p>
 
-          <a
-            href="#work"
-            className="gsap-entrance mt-10 inline-flex min-h-11 items-center gap-3 rounded-full border border-neutral-800/60 bg-[linear-gradient(135deg,rgba(255,255,255,0.08),rgba(255,255,255,0.02))] px-8 py-3.5 font-mono text-xs font-normal uppercase tracking-tight text-neutral-200 shadow-[0_0_30px_rgba(255,255,255,0.3)] transition duration-500 hover:border-neutral-600 active:scale-[0.98]"
-          >
-            View precision work
-            <iconify-icon icon="solar:arrow-right-linear" aria-hidden="true" />
-          </a>
+          <div className="gsap-entrance mt-10 flex flex-wrap items-center justify-center gap-5">
+            <a
+              href="#work"
+              className="inline-flex min-h-11 items-center gap-3 rounded-full border border-neutral-800/60 bg-[linear-gradient(135deg,rgba(255,255,255,0.08),rgba(255,255,255,0.02))] px-8 py-3.5 font-mono text-xs font-normal tracking-tight text-neutral-200 shadow-[0_0_30px_rgba(255,255,255,0.3)] transition duration-500 hover:border-neutral-600 active:scale-[0.98]"
+            >
+              View portfolio
+              <iconify-icon icon="solar:arrow-right-linear" aria-hidden="true" />
+            </a>
+            <a href="#contact" className="inline-flex min-h-11 items-center px-4 py-3.5 font-mono text-xs font-normal text-neutral-500 transition duration-500 hover:text-neutral-200 active:scale-[0.98]">
+              Get in touch
+            </a>
+          </div>
 
           <div className="gsap-entrance mt-14 grid w-full max-w-4xl grid-cols-1 gap-8 md:grid-cols-[1fr_auto_1fr_auto_1fr] md:items-center">
             {metrics.map((metric, index) => (
